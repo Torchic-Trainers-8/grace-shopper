@@ -18,7 +18,7 @@ const Products = db.define('products', {
   description: {
     type: Sequelize.TEXT,
   },
-  cost: {
+  price: {
     type: Sequelize.DOUBLE,
   },
   quantity: {
