@@ -1,8 +1,52 @@
 'use strict'
 
 const {db, models: {User} } = require('../server/db');
-// import Products from '../server/db/models/Products';
 const Products = require('../server/db/models/Products');
+const fs = require("fs");
+const fastcsv = require("fast-csv");
+const { Pool } = require('pg').Pool;
+
+
+let stream = fs.createReadStream("/home/hanfer/codingAdventures/grace-shopper /data/Yarn-Seed-File.csv");
+let csvData = [];
+let csvStream = fastcsv
+  .parse()
+  .on("data", function(data) {
+    csvData.push(data);
+  })
+  .on("end", function() {
+    // remove the first line: header
+    csvData.shift();
+    // connect to the PostgreSQL database
+    // save csvData
+    const pool = new Pool({
+      host: "localhost",
+      user: "postgres",
+      database: "grace-shopper",
+      password: "",
+      port: 5432
+    });
+    const query =
+      "INSERT INTO products (id, title, description, image, price, quantity, weight, color) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)";
+    pool.connect(async (err, client, done) => {
+      if (err) throw err;
+      try {
+        await csvData.forEach(row => {
+          client.query(query, row, (err, res) => {
+            if (err) {
+              console.log(err.stack);
+            } else {
+              console.log("inserted " + res.rowCount + " row:", row);
+            }
+          });
+        });
+      } finally {
+        done();
+      }
+    });
+  });
+stream.pipe(csvStream);
+
 
 /**
  * seed - this function clears the database, updates tables to
@@ -11,34 +55,34 @@ const Products = require('../server/db/models/Products');
 async function seed() {
   await db.sync({ force: true }); // clears db and matches models to tables
   console.log('db synced!');
-  const products = [{
-    id: 1,
-    title: 'Beach Bum',
-  },
-  {
-    id: 2,
-    title: 'Bikini Bottom',
-  },
-  {
-    id: 3,
-    title: 'Blackberry Smash',
-  },{
-    id: 4,
-    title: 'Blood Orange Martini',
-  },{
-    id: 5,
-    title: 'Blood Orange Tea',
-  },{
-    id: 6,
-    title: 'Blue Velvet',
-  },{
-    id: 7,
-    title: 'Body Electric',
-  },{
-    id: 8,
-    title: 'Born to Die',
-  }]
-  await Promise.all([products.map(product => Products.create(product))]);
+  // const products = [{
+  //   id: 1,
+  //   title: 'Beach Bum',
+  // },
+  // {
+  //   id: 2,
+  //   title: 'Bikini Bottom',
+  // },
+  // {
+  //   id: 3,
+  //   title: 'Blackberry Smash',
+  // },{
+  //   id: 4,
+  //   title: 'Blood Orange Martini',
+  // },{
+  //   id: 5,
+  //   title: 'Blood Orange Tea',
+  // },{
+  //   id: 6,
+  //   title: 'Blue Velvet',
+  // },{
+  //   id: 7,
+  //   title: 'Body Electric',
+  // },{
+  //   id: 8,
+  //   title: 'Born to Die',
+  // }]
+  // await Promise.all([products.map(product => Products.create(product))]);
 
   // Creating Users
   const users = await Promise.all([

@@ -3,9 +3,8 @@ const db = require('../db')
 
 
 const Products = db.define('products', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
+  productId: {
+    type: Sequelize.STRING,
     allowNull: false
   },
   title: {
@@ -34,6 +33,14 @@ const Products = db.define('products', {
   },
   color: {
     type: Sequelize.STRING
+  },
+  createdAt: {
+    type: Sequelize.DATE,
+    allowNull: true
+  },
+  updatedAt: {
+    type: Sequelize.DATE,
+    allowNull: true
   }
 });
 
