@@ -1,7 +1,8 @@
 'use strict'
 
 const {db, models: {User} } = require('../server/db');
-import Products from '../server/db/models/Products';
+// import Products from '../server/db/models/Products';
+const Products = require('../server/db/models/Products');
 
 /**
  * seed - this function clears the database, updates tables to
@@ -10,35 +11,34 @@ import Products from '../server/db/models/Products';
 async function seed() {
   await db.sync({ force: true }); // clears db and matches models to tables
   console.log('db synced!');
-  const products = await Promise.all([
-    Products.create({
-      id: 1,
-      title: 'Beach Bum',
-    },
-    {
-      id: 2,
-      title: 'Bikini Bottom',
-    },
-    {
-      id: 3,
-      title: 'Blackberry Smash',
-    },{
-      id: 4,
-      title: 'Blood Orange Martini',
-    },{
-      id: 5,
-      title: 'Blood Orange Tea',
-    },{
-      id: 6,
-      title: 'Blue Velvet',
-    },{
-      id: 7,
-      title: 'Body Electric',
-    },{
-      id: 8,
-      title: 'Born to Die',
-    })
-  ]);
+  const products = [{
+    id: 1,
+    title: 'Beach Bum',
+  },
+  {
+    id: 2,
+    title: 'Bikini Bottom',
+  },
+  {
+    id: 3,
+    title: 'Blackberry Smash',
+  },{
+    id: 4,
+    title: 'Blood Orange Martini',
+  },{
+    id: 5,
+    title: 'Blood Orange Tea',
+  },{
+    id: 6,
+    title: 'Blue Velvet',
+  },{
+    id: 7,
+    title: 'Body Electric',
+  },{
+    id: 8,
+    title: 'Born to Die',
+  }]
+  await Promise.all([products.map(product => Products.create(product))]);
 
   // Creating Users
   const users = await Promise.all([
