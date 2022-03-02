@@ -1,24 +1,61 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const Products = () => {
-  const products = useSelector((state) => state.products);
-  const [selectedProduct, setSelectedProduct] = useState("product");
-  const dispatch = useDispatch();
-  if (!products.length) {
-    return <div>Hellooo</div>;
-  } else {
-    return (
-      <div>
-        <div>This is going to be if we have data</div>
-        {products.map((product) => (
-          <div key={product.id}>
-            <Link to={`/products/${product.id}`}>Product</Link>
-          </div>
-        ))}
-      </div>
-    );
-  }
-};
+  // const dispatch = useDispatch()
+  const [products, setProducts] = useState([])
+  // const products = [
+  //   {
+  //     id: 1,
+  //     title: 'Beach Bum',
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'Bikini Bottom',
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'Blackberry Smash',
+  //   },
+  //   {
+  //     id: 4,
+  //     title: 'Blood Orange Martini',
+  //   },
+  //   {
+  //     id: 5,
+  //     title: 'Blood Orange Tea',
+  //   },
+  //   {
+  //     id: 6,
+  //     title: 'Blue Velvet',
+  //   },
+  //   {
+  //     id: 7,
+  //     title: 'Body Electric',
+  //   },
+  //   {
+  //     id: 8,
+  //     title: 'Born to Die',
+  //   },
+  // ]
 
-export default Products;
+  // useEffect(() => {
+  //   setProducts(useSelector((state) => state.products))
+  // }, [])
+
+  return !products.length ? (
+    <div>Hellooo</div>
+  ) : (
+    <div>
+      <div>This is going to be if we have data</div>
+      {products.map((product) => (
+        <div key={product.id} {...product}>
+          <Link to={`/products/${product.id}`}>Product</Link>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default Products

@@ -1,26 +1,33 @@
-import axios from "axios";
-import React from "react";
-import { useSelector, useDispatch, useState, useEffect } from "react-redux";
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+// import { setCartItem } from '../store'
 
-const Product = () => {
-  const product = useSelector((state) => state.product);
-  const [selectedProduct, setSelectedProduct] = useState("product");
-  const dispatch = useDispatch();
+const Product = ({ title, image, price, quantity, description, id, color }) => {
+  // const dispatch = useDispatch()
 
-  //   async function selectProject(productId) {
-  //       try {
-  //           const res = await axios.get(`/api/products/${productId}`);
-  //           const selectedProduct = res.data;
-  //           setSelectedProduct(selectedProduct);
-  //       } catch (error) {
-  //           console.log(error);
-  //       }
+  // useEffect(() => {
+  //   async function selectProduct(productId) {
+  //     try {
+  //       const res = await axios.get(`/api/products/${productId}`)
+  //       const selectedProduct = res.data
+  //       dispatch(setSelectedProduct(selectedProduct))
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
   //   }
-  return <div>Title: {project.title}</div>;
-  return <div>Image: {project.image}</div>;
-  return <div>Price: {project.price}</div>;
-  return <div>Quantity: {project.quantity}</div>;
-  return <div>Description: {project.description}</div>;
-};
+  // }, [])
 
-export default Product;
+  return (
+    <div>
+      <div>Title: {title}</div>
+      <div>Image: {image}</div>
+      <div>Price: {price}</div>
+      <div>Quantity: {quantity}</div>
+      <div>Description: {description}</div>
+      {/* <button onClick={setCartItem(id)}>Add to Cart</button> */}
+    </div>
+  )
+}
+
+export default Product
