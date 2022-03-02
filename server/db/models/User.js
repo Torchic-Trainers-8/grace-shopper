@@ -1,9 +1,8 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt');
-const axios = require('axios');
-const { DataTypes } = require('@sequelize/core');
+const bcrypt = require('bcrypt')
+const axios = require('axios')
 
 const SALT_ROUNDS = 5
 
@@ -12,14 +11,14 @@ const User = db.define('user', {
     type: Sequelize.STRING,
     unique: true,
     allowNull: false,
-    validate : {
+    validate: {
       isEmail: true,
-      notEmpty: true
-    }
+      notEmpty: true,
+    },
   },
   password: {
     type: Sequelize.STRING,
-    defualtValue: 'password'
+    defualtValue: 'password',
   },
   phoneNumber: {
     type: Sequelize.STRING,
@@ -28,11 +27,11 @@ const User = db.define('user', {
     type: Sequelize.ENUM('Admin', 'Customer', 'Mercheant'),
     allowNull: false,
     validate: {
-      notEmpty: true
+      notEmpty: true,
     },
-    defualtValue: 'Customer'
-  }
-});
+    defualtValue: 'Customer',
+  },
+})
 
 module.exports = User
 
