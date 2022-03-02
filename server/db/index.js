@@ -19,8 +19,8 @@ User.hasOne(PurchaseHistory);
 PurchaseHistory.belongsTo(User);
 Product.hasMany(PurchaseHistory);
 
-User.hasMany(Tag);
-Tag.belongsTo(User);
+User.belongsToMany(Product, { through: Tag });
+Product.belongsToMany(User, { through: Tag });
 
 User.hasMany(PaymentInfo);
 PaymentInfo.belongsTo(User);
