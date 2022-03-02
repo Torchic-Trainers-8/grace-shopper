@@ -46,7 +46,7 @@ let csvStream = fastcsv
             if (err) {
               console.log(err.stack);
             } else {
-              console.log('inserted ' + res.rowCount + ' row:', row);
+              // console.log('inserted ' + res.rowCount + ' row:', row);
             }
           });
         });
@@ -95,8 +95,12 @@ async function seed() {
 
   // Creating Users
   const users = await Promise.all([
-    User.create({ email: 'user1@gmail.com', password: '123' }),
-    User.create({ email: 'user2@gmail.com', password: '123' }),
+    User.create({ username: 'user1@gmail.com', password: '123', role: 'Admin' }),
+    User.create({
+      username: 'user2@gmail.com',
+      password: '123',
+      role: 'Customer',
+    }),
   ]);
 
   console.log(`seeded ${users.length} users`);
