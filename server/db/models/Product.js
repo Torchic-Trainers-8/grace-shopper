@@ -1,17 +1,17 @@
-const Sequelize = require('sequelize')
+const { Sequelize, DataTypes, Model } = require('sequelize')
 const db = require('../db')
 
-
-const Products = db.define('products', {
-  productId: {
+const Product = db.define('product', {
+  id: {
     type: Sequelize.STRING,
-    allowNull: false
+    primaryKey: true,
+    allowNull: false,
   },
   title: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      notEmpty: true
+      notEmpty: true,
     },
   },
   description: {
@@ -22,26 +22,26 @@ const Products = db.define('products', {
   },
   quantity: {
     type: Sequelize.INTEGER,
-    defaultValue: 0
+    defaultValue: 0,
   },
   image: {
     type: Sequelize.STRING,
-    defaultValue: "https://brownsheep.com/wp-content/uploads/2020/01/wildfoote.jpg"
+    defaultValue: 'https://brownsheep.com/wp-content/uploads/2020/01/wildfoote.jpg',
   },
   weight: {
     type: Sequelize.STRING,
   },
   color: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
   },
   createdAt: {
     type: Sequelize.DATE,
-    allowNull: true
+    allowNull: true,
   },
   updatedAt: {
     type: Sequelize.DATE,
-    allowNull: true
-  }
-});
+    allowNull: true,
+  },
+})
 
-module.exports = Products;
+module.exports = Product
