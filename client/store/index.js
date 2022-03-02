@@ -5,8 +5,13 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import auth from "./auth";
 import axios from "axios";
 import products from "./products";
+import product from "./product";
 
-const reducer = combineReducers({ auth });
+const reducer = combineReducers({
+  auth,
+  product: productReducer,
+  products: productsReducer,
+});
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
 );
