@@ -3,7 +3,7 @@ import { createLogger } from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import auth from './auth'
-import axios from 'axios'
+// import axios from 'axios'
 import { productsReducer } from './products'
 import { productReducer } from './product'
 

@@ -13,7 +13,6 @@ const Products = () => {
     async function fetchProducts() {
       try {
         const { data } = await axios.get('/api/products')
-        console.log('Got products')
         dispatch(getProducts(data))
       } catch (error) {
         console.log(error)
@@ -23,15 +22,14 @@ const Products = () => {
   }, [])
 
   return !products ? (
-    <div>Hellooo</div>
+    <div>Loading Products...</div>
   ) : (
     <div>
-      <div>This is going to be if we have data</div>
       {products.map((product) => (
         <div key={product.id}>
-          <Link to={`/products/${product.id}`}>
-            <Product props={product} />
-          </Link>
+          <br />
+          <Product product={product} />
+          <br />
         </div>
       ))}
     </div>
