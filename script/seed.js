@@ -83,7 +83,7 @@ async function seed() {
   //   id: 8,
   //   title: 'Born to Die',
   // }]
-  // await Promise.all([products.map(product => Products.create(product))]);
+  // await Promise.all([products.map(product => Product.create(product))]);
 
   // Creating Users
   const users = await Promise.all([

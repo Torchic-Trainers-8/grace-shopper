@@ -3,18 +3,27 @@ const db = require('../db')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 const axios = require('axios');
+const { DataTypes } = require('@sequelize/core');
 
 const SALT_ROUNDS = 5;
 
 const User = db.define('user', {
-  username: {
+  email: {
     type: Sequelize.STRING,
     unique: true,
-    allowNull: false
+    allowNull: false,
+    validate : {
+      isEmail: true,
+      notEmpty: true
+    }
   },
   password: {
     type: Sequelize.STRING,
-  }
+    defualtValue: 'password'
+  },
+  phoneNumber: {
+    type: Sequelize.STRING,
+  },
 })
 
 module.exports = User
