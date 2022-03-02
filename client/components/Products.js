@@ -2,50 +2,34 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import Product from "./Product";
+import { getProducts } from "../store/products";
 
 const Products = () => {
-  // const dispatch = useDispatch()
-  //const [products, setProducts] = useState([]);
-  const products = [
-    {
-      id: 1,
-      title: "Beach Bum",
-    },
-    {
-      id: 2,
-      title: "Bikini Bottom",
-    },
-    {
-      id: 3,
-      title: "Blackberry Smash",
-    },
-    {
-      id: 4,
-      title: "Blood Orange Martini",
-    },
-    {
-      id: 5,
-      title: "Blood Orange Tea",
-    },
-    {
-      id: 6,
-      title: "Blue Velvet",
-    },
-    {
-      id: 7,
-      title: "Body Electric",
-    },
-    {
-      id: 8,
-      title: "Born to Die",
-    },
-  ];
-
+  const dispatch = useDispatch();
+  const products = useSelector((state) => {
+    const products = state.products;
+  });
+  console.log("STATE", state);
   // useEffect(() => {
-  //   setProducts(useSelector((state) => state.products));
-  // }, []);
-
-  return !products.length ? (
+  //   async function fetchAlbums() {
+  //     const { data } = await axios.get('/api/albums')
+  //     dispatch(setAlbums(data))
+  //   }
+  //   fetchAlbums()
+  // })
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const { data } = await axios.get("/api/products");
+        console.log("Got products");
+        dispatch(getProducts(data));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchProducts();
+  }, []);
+  return !products ? (
     <div>Hellooo</div>
   ) : (
     <div>
