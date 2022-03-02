@@ -1,34 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import Product from "./Product";
-import { getProducts } from "../store/products";
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import { useSelector, useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
+import Product from './Product'
+import { getProducts } from '../store/products'
 
 const Products = () => {
-  const dispatch = useDispatch();
-  const products = useSelector((state) => {
-    const products = state.products;
-  });
-  console.log("STATE", state);
-  // useEffect(() => {
-  //   async function fetchAlbums() {
-  //     const { data } = await axios.get('/api/albums')
-  //     dispatch(setAlbums(data))
-  //   }
-  //   fetchAlbums()
-  // })
+  const dispatch = useDispatch()
+  const products = useSelector((state) => state.products)
+
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const { data } = await axios.get("/api/products");
-        console.log("Got products");
-        dispatch(getProducts(data));
+        const { data } = await axios.get('/api/products')
+        console.log('Got products')
+        dispatch(getProducts(data))
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     }
-    fetchProducts();
-  }, []);
+    fetchProducts()
+  }, [])
+
   return !products ? (
     <div>Hellooo</div>
   ) : (
@@ -42,7 +35,7 @@ const Products = () => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default Products;
+export default Products
