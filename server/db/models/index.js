@@ -8,6 +8,27 @@ const Address = require('./Address');
 const PurchaseHistory = require('./PurchaseHistory');
 const Cart = require('./Cart');
 
+User.hasOne(Cart);
+Cart.belongsTo(User);
+Product.hasMany(Cart);
+
+User.hasOne(PurchaseHistory);
+PurchaseHistory.belongsTo(User);
+Product.hasMany(PurchaseHistory);
+
+User.hasMany(Tag);
+Tag.belongsTo(User);
+
+User.hasMany(PaymentInfo);
+PaymentInfo.belongsTo(User);
+Address.belongsTo(PaymentInfo);
+
+User.hasMany(Address);
+Address.belongsTo(User);
+
+User.hasOne(Wishlist);
+Wishlist.belongsTo(User);
+
 module.exports = {
   db,
   Product,
