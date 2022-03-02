@@ -3,6 +3,7 @@ import { connect, useSelector, useDispatch } from 'react-redux'
 import { withRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { Login, Signup } from './components/AuthForm'
 import Home from './components/Home'
+import Products from './components/Products'
 import { me } from './store'
 
 /**
@@ -23,6 +24,7 @@ const Routes = () => {
         <Switch>
           <Route path="/home" component={Home} />
           <Redirect to="/home" />
+          <Route path="/products" component={Products} />
         </Switch>
       ) : (
         <Switch>
@@ -31,6 +33,7 @@ const Routes = () => {
           </Route>
           <Route path="/login">{Login}</Route>
           <Route path="/signup">{Signup}</Route>
+          <Route path="/products" component={Products} />
         </Switch>
       )}
     </div>
