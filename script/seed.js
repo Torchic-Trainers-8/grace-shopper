@@ -2,12 +2,12 @@
 
 const {
   db,
-  models: { User },
-} = require("../server/db");
-const Product = require("../server/db/models/Product");
-const fs = require("fs");
-const fastcsv = require("fast-csv");
-const Pool = require("pg").Pool;
+  models: { Product, Tag, User, PaymentInfo, Wishlist, Address, PurchaseHistory, Cart },
+} = require('../server/db/index');
+const Product = require('../server/db/models/Product');
+const fs = require('fs');
+const fastcsv = require('fast-csv');
+const Pool = require('pg').Pool;
 
 let stream = fs.createReadStream("data/Yarn-Seed-File.csv");
 let csvData = [];
