@@ -14,8 +14,20 @@ const User = db.define('user', {
   },
   password: {
     type: Sequelize.STRING,
+    defualtValue: 'password'
+  },
+  phoneNumber: {
+    type: Sequelize.STRING,
+  },
+  role: {
+    type: Sequelize.ENUM('Admin', 'Customer', 'Mercheant'),
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    },
+    defualtValue: 'Customer'
   }
-})
+});
 
 module.exports = User
 
