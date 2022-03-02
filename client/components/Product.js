@@ -1,14 +1,10 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { getProduct } from '../store/product'
+import React from 'react'
+import { useDispatch } from 'react-redux'
 // import { setCartItem } from '../store'
 
 const Product = (props) => {
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const { title, image, price, quantity, description, id } = props.product
-
-  // const product = useSelector((state) => state.product)
 
   // useEffect(() => {
   //   async function fetchProduct() {

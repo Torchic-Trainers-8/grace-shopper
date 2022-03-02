@@ -3,6 +3,7 @@ const Product = require('../db/models/Product')
 
 //PRODUCTS GET ROUTER
 
+// /api/products
 router.get('/', async (req, res, next) => {
   try {
     const products = await Product.findAll()
@@ -12,6 +13,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+// /api/products/:id
 router.get('/:id', async (req, res, next) => {
   try {
     const product = await Product.findOne({
