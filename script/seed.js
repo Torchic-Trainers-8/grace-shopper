@@ -103,6 +103,7 @@ async function seed() {
     }),
   ]);
 
+
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
   // return {
@@ -111,11 +112,11 @@ async function seed() {
   //     murphy: users[1]
   //   }
   // }
-  const purchaseHistory = await Promise.all([
-    PurchaseHistory.create({userId: 1, productId: 1, quantity: 1, price: 1.00})
-  ])
-  console.log(await PurchaseHistory.findAll());
-}
+//   const purchaseHistory = await Promise.all([
+//     PurchaseHistory.create({userId: 1, productId: 1, quantity: 1, price: 1.00})
+//   ])
+//   console.log(await PurchaseHistory.findAll());
+  }
 
 /*
  We've separated the `seed` function from the `runSeed` function.
