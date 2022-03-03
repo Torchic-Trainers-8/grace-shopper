@@ -1,34 +1,43 @@
-"use strict";
+'use strict';
 
 const {
   db,
-  models: { Product, Tag, User, PaymentInfo, Wishlist, Address, PurchaseHistory, Cart },
+  models: {
+    Product,
+    Tag,
+    User,
+    PaymentInfo,
+    Wishlist,
+    Address,
+    PurchaseHistory,
+    Cart,
+  },
 } = require('../server/db/index');
 const fs = require('fs');
 const fastcsv = require('fast-csv');
 const Pool = require('pg').Pool;
 
-let stream = fs.createReadStream("data/Yarn-Seed-File.csv");
+let stream = fs.createReadStream('data/Yarn-Seed-File.csv');
 let csvData = [];
 let csvStream = fastcsv
   .parse()
-  .on("data", function (data) {
+  .on('data', function (data) {
     csvData.push(data);
   })
-  .on("end", function () {
+  .on('end', function () {
     // remove the first line: header
     csvData.shift();
     // connect to the PostgreSQL database
     // save csvData
     const pool = new Pool({
-      host: "localhost",
-      user: "postgres",
-      database: "grace-shopper",
-      password: "",
+      host: 'localhost',
+      user: 'postgres',
+      database: 'grace-shopper',
+      password: '',
       port: 5432,
     });
     const query =
-      "INSERT INTO PRODUCTS (id, title, description, image, price, quantity, weight, color) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)";
+      'INSERT INTO PRODUCTS (id, title, description, image, price, quantity, weight, color) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
     pool.connect((err, client, done) => {
       if (err) throw err;
       try {
@@ -37,7 +46,7 @@ let csvStream = fastcsv
             if (err) {
               console.log(err.stack);
             } else {
-              // console.log("inserted " + res.rowCount + " row:", row);
+              // console.log('inserted ' + res.rowCount + ' row:', row);
             }
           });
         });
@@ -53,7 +62,7 @@ let csvStream = fastcsv
  */
 async function seed() {
   await db.sync({ force: true }); // clears db and matches models to tables
-  console.log("db synced!");
+  console.log('db synced!');
   stream.pipe(csvStream);
   // const products = [{
   //   id: 1,
@@ -115,16 +124,16 @@ async function seed() {
  The `seed` function is concerned only with modifying the database.
 */
 async function runSeed() {
-  console.log("seeding...");
+  console.log('seeding...');
   try {
     await seed();
   } catch (err) {
     console.error(err);
     process.exitCode = 1;
   } finally {
-    console.log("closing db connection");
+    console.log('closing db connection');
     await db.close();
-    console.log("db connection closed");
+    console.log('db connection closed');
   }
 }
 
