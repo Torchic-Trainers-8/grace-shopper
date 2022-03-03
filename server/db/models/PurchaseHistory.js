@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const db = require('../db');
 
-const PurchaseHistory = db.define ('purchaseHistory', {
+const PurchaseHistory = db.define ('purchase_history', {
   quantity: {
     type: Sequelize.INTEGER,
     allowNull: false,

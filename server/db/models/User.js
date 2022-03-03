@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const axios = require('axios')
 
+
 const SALT_ROUNDS = 5
 
 const User = db.define('user', {
