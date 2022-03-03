@@ -7,10 +7,6 @@ import Products from './components/Products'
 import SingleProduct from './components/SingleProduct'
 import { me } from './store'
 
-/**
- * COMPONENT
- */
-
 const Routes = () => {
   const isLoggedIn = useSelector((state) => !!state.auth.id)
   const dispatch = useDispatch()
@@ -24,9 +20,9 @@ const Routes = () => {
       {isLoggedIn ? (
         <Switch>
           <Route path="/home" component={Home} />
-          <Redirect to="/home" />
           <Route exact path="/products" component={Products} />
           <Route path="/products/:id" component={SingleProduct} />
+          <Redirect to="/home" />
         </Switch>
       ) : (
         <Switch>
@@ -44,7 +40,3 @@ const Routes = () => {
 }
 
 export default Routes
-/*
-I changed the routes up there to go to single product and changed it to have products/:productId here
-and in the thunk and in the router for single product.
-*/

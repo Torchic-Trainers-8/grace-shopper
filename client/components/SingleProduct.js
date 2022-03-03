@@ -1,18 +1,14 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-// import { setCartItem } from '../store'
 import axios from 'axios'
 import Products from './Products'
 import { getProduct } from '../store/product'
-// import { Link } from "react-router-dom";
 
 const SingleProduct = (props) => {
   console.log(props)
   const dispatch = useDispatch()
   const product = useSelector((state) => state.product)
   const { title, image, price, quantity, description, id } = product
-  //console.log("PROPS", props);
-  //const productId = useSelector((state) => state.product.id);
 
   useEffect(() => {
     async function fetchProduct() {
@@ -27,10 +23,9 @@ const SingleProduct = (props) => {
     fetchProduct()
   }, [])
 
-  //   return !props.product ? (
-  //     <div>Loading Single Product Yarn...</div>
-  //   ) : (
-  return (
+  return !props.product ? (
+    <div>Loading Single Product Yarn...</div>
+  ) : (
     <div>
       <div>Product Number: {id}</div>
       <div>Title: {title}</div>
@@ -44,5 +39,3 @@ const SingleProduct = (props) => {
 }
 
 export default SingleProduct
-
-// <Link to={`/products/${product.id}`}></Link>
