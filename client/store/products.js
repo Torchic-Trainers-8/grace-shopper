@@ -14,18 +14,18 @@ export const getProducts = (products) => {
 }
 
 //Thunktions
-export const fetchProducts = () => {
-  return async (dispatch) => {
-    try {
-      const response = await axios.get('/api/products')
-      const data = response.data
-      console.log('Got products')
-      dispatch(getProducts(data))
-    } catch (error) {
-      console.log(error)
-    }
-  }
-}
+// export const fetchProducts = () => {
+//   return async (dispatch) => {
+//     try {
+//       const response = await axios.get('/api/products')
+//       const data = response.data
+//       console.log('Got products')
+//       dispatch(getProducts(data))
+//     } catch (error) {
+//       console.log(error)
+//     }
+//   }
+// }
 
 const initialState = []
 

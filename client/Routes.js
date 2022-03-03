@@ -1,24 +1,23 @@
-import React, { Component, Fragment, useEffect } from "react";
-import { connect, useSelector, useDispatch } from "react-redux";
-import { withRouter, Route, Switch, Redirect } from "react-router-dom";
-import { Login, Signup } from "./components/AuthForm";
-import Home from "./components/Home";
-import Products from "./components/Products";
-import Product from "./components/Product";
-import SingleProduct from "./components/singleProduct";
-import { me } from "./store";
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Route, Switch, Redirect } from 'react-router-dom'
+import { Login, Signup } from './components/AuthForm'
+import Home from './components/Home'
+import Products from './components/Products'
+import SingleProduct from './components/SingleProduct'
+import { me } from './store'
 
 /**
  * COMPONENT
  */
 
 const Routes = () => {
-  const isLoggedIn = useSelector((state) => !!state.auth.id);
-  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => !!state.auth.id)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(me());
-  }, []);
+    dispatch(me())
+  }, [])
 
   return (
     <div>
@@ -27,7 +26,7 @@ const Routes = () => {
           <Route path="/home" component={Home} />
           <Redirect to="/home" />
           <Route exact path="/products" component={Products} />
-          <Route path="/products/:productId" component={SingleProduct} />
+          <Route path="/products/:id" component={SingleProduct} />
         </Switch>
       ) : (
         <Switch>
@@ -37,15 +36,15 @@ const Routes = () => {
           <Route path="/login">{Login}</Route>
           <Route path="/signup">{Signup}</Route>
           <Route exact path="/products" component={Products} />
-          <Route path="/products/:productId" component={SingleProduct} />
+          <Route path="/products/:id" component={SingleProduct} />
         </Switch>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Routes;
+export default Routes
 /*
 I changed the routes up there to go to single product and changed it to have products/:productId here
-and in the thunk and in the router for single product. 
+and in the thunk and in the router for single product.
 */
