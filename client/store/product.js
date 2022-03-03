@@ -12,7 +12,7 @@ export const getProduct = (product) => {
 export const fetchProduct = () => {
   return async (dispatch) => {
     try {
-      const response = await axios.get("/api/:productId");
+      const response = await axios.get("/api/products/:productId");
       const data = response.data;
       dispatch(getProduct(data));
     } catch (error) {
