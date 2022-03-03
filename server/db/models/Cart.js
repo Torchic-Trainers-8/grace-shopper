@@ -2,6 +2,7 @@ const { Sequelize, DataTypes, Model } = require('sequelize');
 const db = require('../db');
 
 const Cart = db.define('cart', {
+  // o: remove this if not being used
   // username: {
   //   type: Sequelize.STRING,
   //   foreignKey: true,

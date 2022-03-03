@@ -16,6 +16,7 @@ router.get('/', async (req, res, next) => {
 // /api/products/:id
 router.get('/:id', async (req, res, next) => {
   try {
+    // o: make sure to check for the case when resource is not found
     const product = await Product.findOne({
       where: { id: req.params.id },
     })

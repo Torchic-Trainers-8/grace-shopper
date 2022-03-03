@@ -23,6 +23,7 @@ const User = db.define('user', {
   phoneNumber: {
     type: Sequelize.STRING,
   },
+  // o: let's talk about this setup
   role: {
     type: Sequelize.ENUM('Admin', 'Customer', 'Merchant'),
     allowNull: false,

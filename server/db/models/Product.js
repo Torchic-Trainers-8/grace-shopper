@@ -17,6 +17,7 @@ const Product = db.define('product', {
   description: {
     type: Sequelize.TEXT,
   },
+  // o: should be a DECIMAL with precision of 2
   price: {
     type: Sequelize.DOUBLE,
   },
