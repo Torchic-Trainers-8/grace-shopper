@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import Product from './Product'
 import { getProducts } from '../store/products'
+import { Link } from 'react-router-dom'
 
 const Products = () => {
   const dispatch = useDispatch()
