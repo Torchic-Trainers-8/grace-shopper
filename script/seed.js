@@ -4,7 +4,6 @@ const {
   db,
   models: { Product, Tag, User, PaymentInfo, Wishlist, Address, PurchaseHistory, Cart },
 } = require('../server/db/index');
-const Product = require('../server/db/models/Product');
 const fs = require('fs');
 const fastcsv = require('fast-csv');
 const Pool = require('pg').Pool;
@@ -24,7 +23,7 @@ let csvStream = fastcsv
     const pool = new Pool({
       host: "localhost",
       user: "postgres",
-      database: "grace-shopper",
+      database: "grace_shopper",
       password: "",
       port: 5432,
     });
@@ -87,8 +86,8 @@ async function seed() {
 
   // Creating Users
   const users = await Promise.all([
-    User.create({ username: "user1", password: "123" }),
-    User.create({ username: "user2", password: "123" }),
+    User.create({ username: "user1", password: "123", role: "Customer" }),
+    // User.create({ username: "user2", password: "123" }),
   ]);
 
   console.log(`seeded ${users.length} users`);
@@ -99,6 +98,10 @@ async function seed() {
   //     murphy: users[1]
   //   }
   // }
+  const purchaseHistory = await Promise.all([
+    PurchaseHistory.create({userId: 1, productId: 1, quantity: 1, price: 1.00})
+  ])
+  console.log(await PurchaseHistory.findAll());
 }
 
 /*
