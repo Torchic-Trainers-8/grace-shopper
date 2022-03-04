@@ -49,7 +49,7 @@ let csvStream = fastcsv
         }
       })
     });
-
+  });
 
 /**
  * seed - this function clears the database, updates tables to
@@ -72,7 +72,7 @@ async function seed() {
 
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
-  }
+}
 
 /*
  We've separated the `seed` function from the `runSeed` function.
