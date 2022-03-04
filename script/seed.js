@@ -41,21 +41,15 @@ let csvStream = fastcsv
     }
     const query =
       'INSERT INTO PRODUCTS (id, title, description, image, price, quantity, weight, color) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
-    client.connect((error, client, next) => {
-      if (error) throw error;
-      try {
-        csvData.forEach((row) => {
-          client.query(query, row, (error) => {
-            if (error) {
-              console.log(error.stack);
-            };
-          });
-        });
-      } catch(error) {
-        next(error);
-      };
+    client.connect();
+    csvData.forEach((row) => {
+      client.query(query, row, (error) => {
+        if (error) {
+          console.log(error.stack);
+        }
+      })
     });
-  });
+
 
 /**
  * seed - this function clears the database, updates tables to
