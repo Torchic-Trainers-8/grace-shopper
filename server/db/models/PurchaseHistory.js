@@ -10,7 +10,7 @@ const PurchaseHistory = db.define ('purchase_history', {
     }
   },
   price: {
-    type: Sequelize.DOUBLE,
+    type: Sequelize.DECIMAL(2),
     allowNull: false,
     validator: {
       notEmpty: true

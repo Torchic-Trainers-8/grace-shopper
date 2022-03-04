@@ -1,29 +1,23 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 const db = require('../db');
 
-const Cart = db.define('cart', {
-  // username: {
-  //   type: Sequelize.STRING,
-  //   foreignKey: true,
-  //   allowNull: false,
-  // },
-  // productId: {
-  //   type: Sequelize.INTEGER,
-  //   foreignKey: true,
-  //   allowNull: false,
-  // },
-  cartQty: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
+const Cart = db.define(
+  'cart',
+  {
+    cartQty: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
+    // createdAt: {
+    //   type: Sequelize.DATE,
+    //   allowNull: true,
+    // },
+    // updatedAt: {
+    //   type: Sequelize.DATE,
+    //   allowNull: true,
+    // },
   },
-  createdAt: {
-    type: Sequelize.DATE,
-    allowNull: true,
-  },
-  updatedAt: {
-    type: Sequelize.DATE,
-    allowNull: true,
-  },
-});
+  { timestamps: false }
+);
 
 module.exports = Cart;
