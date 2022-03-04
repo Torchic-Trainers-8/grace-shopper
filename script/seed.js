@@ -29,13 +29,20 @@ let csvStream = fastcsv
     csvData.shift();
     // connect to the PostgreSQL database
     // save csvData
-    const pool = new Pool({
-      host: 'localhost',
-      user: 'postgres',
-      database: 'grace-shopper',
-      password: '',
-      port: 5432,
-    });
+    let pool;
+    if (process.env.DATABASE_URL) {
+      pool = new Pool({
+        host: process.env.DATABASE_URL
+      })
+    } else {
+      pool = new Pool({
+        host: 'localhost',
+        user: 'postgres',
+        database: 'grace-shopper',
+        password: '',
+        port: 5432,
+      });
+    }
     const query =
       'INSERT INTO PRODUCTS (id, title, description, image, price, quantity, weight, color) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
     pool.connect((err, client, done) => {
