@@ -4,10 +4,11 @@ const db = require('./db');
 const Product = require('./models/Product');
 const User = require('./models/User');
 const Cart = require('./models/Cart');
+const Order = require('./models/Order_History');
 const Tag = require('./models/Tag');
 const PaymentInfo = require('./models/PaymentInfo');
 const Wishlist = require('./models/Wishlist');
-const Address = require('./models/Address')
+const Address = require('./models/Address');
 const PurchaseHistory = require('./models/PurchaseHistory');
 
 //associations could go here!
@@ -15,11 +16,15 @@ const PurchaseHistory = require('./models/PurchaseHistory');
 Product.belongsToMany(User, { through: Cart });
 User.belongsToMany(Product, { through: Cart });
 
+User.hasMany(Order);
+Order.belongsTo(User);
+// Product.belongsTo(Order);
+
 User.hasMany(PurchaseHistory);
 PurchaseHistory.belongsTo(User);
 PurchaseHistory.belongsTo(Product);
 
-Product.belongsToMany(Tag, {through: 'product_tags'});
+Product.belongsToMany(Tag, { through: 'product_tags' });
 Tag.belongsToMany(Product, { through: 'product_tags' });
 
 User.hasMany(PaymentInfo);
@@ -39,10 +44,11 @@ module.exports = {
     User,
     Product,
     Cart,
+    Order,
     Tag,
     PaymentInfo,
     Wishlist,
     Address,
-    PurchaseHistory
+    PurchaseHistory,
   },
 };
