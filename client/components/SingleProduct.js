@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
-import Products from './Products'
 import { getProduct } from '../store/product'
 
 const SingleProduct = (props) => {
-  console.log(props)
   const dispatch = useDispatch()
   const product = useSelector((state) => state.product)
   const { title, image, price, quantity, description, id } = product
-
   useEffect(() => {
     async function fetchProduct() {
       try {
@@ -23,7 +20,7 @@ const SingleProduct = (props) => {
     fetchProduct()
   }, [])
 
-  return !props.product ? (
+  return !product ? (
     <div>Loading Single Product Yarn...</div>
   ) : (
     <div>
