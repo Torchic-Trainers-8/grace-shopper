@@ -15,8 +15,8 @@ const {
 } = require('../server/db/index');
 const fs = require('fs');
 const fastcsv = require('fast-csv');
-const Pool = require('pg').Pool;
 const { Client } = require('pg');
+
 
 let stream = fs.createReadStream('data/Yarn-Seed-File.csv');
 let csvData = [];
@@ -39,30 +39,26 @@ let csvStream = fastcsv
         }
       });
     } else {
-      client = new Pool({
-        host: 'localhost',
-        user: 'postgres',
-        database: 'grace-shopper',
-        password: '',
-        port: 5432,
+      client = new Client({
+        connectionString: 'postgres://localhost:5432/grace-shopper'
       });
     }
     const query =
       'INSERT INTO PRODUCTS (id, title, description, image, price, quantity, weight, color) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
-    client.connect((err, client, done) => {
-      if (err) throw err;
+    client.connect((error, client, next) => {
+      if (error) throw error;
       try {
         csvData.forEach((row) => {
-          client.query(query, row, (err, res) => {
-            if (err) {
-              console.log(err.stack);
+          client.query(query, row, (error, res) => {
+            if (error) {
+              console.log(error.stack);
             } else {
               // console.log('inserted ' + res.rowCount + ' row:', row);
             }
           });
         });
-      } finally {
-        // done();
+      } catch(error){
+        next(error);
       }
     });
   });
