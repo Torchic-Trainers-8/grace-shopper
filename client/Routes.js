@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { Login, Signup } from "./components/AuthForm";
 import Home from "./components/Home";
 import Products from "./components/Products";
+import Admin from "./components/Admin";
 import SingleProduct from "./components/SingleProduct";
 import { me } from "./store";
 
@@ -22,6 +23,7 @@ const Routes = () => {
           <Route path="/home" component={Home} />
           <Route exact path="/products" component={Products} />
           <Route path="/products/:id" component={SingleProduct} />
+          <Route path="/Admin" component={Admin} />
           <Redirect to="/home" />
         </Switch>
       ) : (
