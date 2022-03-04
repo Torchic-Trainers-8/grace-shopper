@@ -17,7 +17,7 @@ const fs = require('fs');
 const fastcsv = require('fast-csv');
 const { Client } = require('pg');
 
-
+let client;
 let stream = fs.createReadStream('data/Yarn-Seed-File.csv');
 let csvData = [];
 let csvStream = fastcsv
@@ -26,11 +26,7 @@ let csvStream = fastcsv
     csvData.push(data);
   })
   .on('end', function () {
-    // remove the first line: header
     csvData.shift();
-    // connect to the PostgreSQL database
-    // save csvData
-    let client;
     if (process.env.DATABASE_URL) {
       client = new Client({
         connectionString: process.env.DATABASE_URL,
@@ -55,8 +51,8 @@ let csvStream = fastcsv
             };
           });
         });
-      } finally {
-        client.end();
+      } catch(error) {
+        next(error);
       };
     });
   });
@@ -99,6 +95,7 @@ async function runSeed() {
   } finally {
     console.log('closing db connection');
     await db.close();
+    await client.end();
     console.log('db connection closed');
   }
 }
