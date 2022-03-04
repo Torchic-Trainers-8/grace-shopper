@@ -49,17 +49,15 @@ let csvStream = fastcsv
       if (error) throw error;
       try {
         csvData.forEach((row) => {
-          client.query(query, row, (error, res) => {
+          client.query(query, row, (error) => {
             if (error) {
               console.log(error.stack);
-            } else {
-              // console.log('inserted ' + res.rowCount + ' row:', row);
-            }
+            };
           });
         });
-      } catch(error){
-        next(error);
-      }
+      } finally {
+        client.end();
+      };
     });
   });
 
@@ -68,39 +66,10 @@ let csvStream = fastcsv
  *      match the models, and populates the database.
  */
 async function seed() {
-  await db.sync({ force: true }); // clears db and matches models to tables
+  await db.sync({ force: true });
   console.log('db synced!');
   stream.pipe(csvStream);
-  // const products = [{
-  //   id: 1,
-  //   title: 'Beach Bum',
-  // },
-  // {
-  //   id: 2,
-  //   title: 'Bikini Bottom',
-  // },
-  // {
-  //   id: 3,
-  //   title: 'Blackberry Smash',
-  // },{
-  //   id: 4,
-  //   title: 'Blood Orange Martini',
-  // },{
-  //   id: 5,
-  //   title: 'Blood Orange Tea',
-  // },{
-  //   id: 6,
-  //   title: 'Blue Velvet',
-  // },{
-  //   id: 7,
-  //   title: 'Body Electric',
-  // },{
-  //   id: 8,
-  //   title: 'Born to Die',
-  // }]
-  // await Promise.all([products.map(product => Product.create(product))]);
 
-  // Creating Users
   const users = await Promise.all([
     User.create({ username: 'user1@gmail.com', password: '123', role: 'Admin' }),
     User.create({
@@ -113,16 +82,6 @@ async function seed() {
 
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
-  // return {
-  //   users: {
-  //     cody: users[0],
-  //     murphy: users[1]
-  //   }
-  // }
-//   const purchaseHistory = await Promise.all([
-//     PurchaseHistory.create({userId: 1, productId: 1, quantity: 1, price: 1.00})
-//   ])
-//   console.log(await PurchaseHistory.findAll());
   }
 
 /*
