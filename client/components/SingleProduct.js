@@ -12,7 +12,6 @@ const SingleProduct = (props) => {
       try {
         const { data } = await axios.get(`/api/products/${props.match.params.id}`)
         dispatch(getProduct(data))
-        // console.log(data);
       } catch (error) {
         console.log(error)
       }
