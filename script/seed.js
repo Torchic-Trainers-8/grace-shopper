@@ -16,6 +16,7 @@ const {
 const fs = require('fs');
 const fastcsv = require('fast-csv');
 const Pool = require('pg').Pool;
+const { Client } = require('pg');
 
 let stream = fs.createReadStream('data/Yarn-Seed-File.csv');
 let csvData = [];
@@ -29,13 +30,16 @@ let csvStream = fastcsv
     csvData.shift();
     // connect to the PostgreSQL database
     // save csvData
-    let pool;
+    let client;
     if (process.env.DATABASE_URL) {
-      pool = new Pool({
-        host: process.env.DATABASE_URL
-      })
+      client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+          rejectUnauthorized: false
+        }
+      });
     } else {
-      pool = new Pool({
+      client = new Pool({
         host: 'localhost',
         user: 'postgres',
         database: 'grace-shopper',
@@ -45,7 +49,7 @@ let csvStream = fastcsv
     }
     const query =
       'INSERT INTO PRODUCTS (id, title, description, image, price, quantity, weight, color) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
-    pool.connect((err, client, done) => {
+    client.connect((err, client, done) => {
       if (err) throw err;
       try {
         csvData.forEach((row) => {
