@@ -62,7 +62,7 @@ let csvStream = fastcsv
           });
         });
       } finally {
-        done();
+        // done();
       }
     });
   });
