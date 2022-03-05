@@ -50,9 +50,41 @@ router.put("/", async (req, res, next) => {
         color,
       })
     );
-    console.log(await Product.findByPk(productId));
+    console.error("No products found");
   } catch (error) {
     next(error);
+  }
+});
+
+router.put("/:productId/update/increase", async (req, res, next) => {
+  try {
+    const id = req.params.productId;
+    const products = await Product.findByPk(id);
+    if (products === null) {
+      res.send("There is no Product by that ID");
+    }
+    const updatedProduct = await products.update({
+      quantity: products.quantity + 1,
+    });
+    res.status(200).send(updatedProduct);
+  } catch (error) {
+    console.error("No product to increment");
+  }
+});
+
+router.put("/:productId/update/decrease", async (req, res, next) => {
+  try {
+    const id = req.params.productId;
+    const products = await Product.findByPk(id);
+    if (products == null) {
+      res.send("There is no product by that ID");
+    }
+    const updatedProduct = await products.update({
+      quantity: products.quantity - 1,
+    });
+    res.status(200).send(updatedProduct);
+  } catch (error) {
+    console.error("No product to decrement");
   }
 });
 

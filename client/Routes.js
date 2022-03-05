@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import Products from "./components/Products";
 import Admin from "./components/Admin";
 import SingleProduct from "./components/SingleProduct";
+import EditProduct from "./components/EditProduct";
 import { me } from "./store";
 
 const Routes = () => {
@@ -24,6 +25,7 @@ const Routes = () => {
           <Route exact path="/products" component={Products} />
           <Route path="/products/:id" component={SingleProduct} />
           <Route path="/Admin" component={Admin} />
+          <Route path="/Admin/EditProduct" component={EditProduct} />
           <Redirect to="/home" />
         </Switch>
       ) : (
