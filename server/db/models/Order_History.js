@@ -2,7 +2,7 @@ const { Sequelize, DataTypes, Model } = require('sequelize');
 const db = require('../db');
 
 const Order = db.define('order', {
-  placed: {
+  isPurchased: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
     allowNull: false,
