@@ -1,25 +1,25 @@
-import React, { useEffect } from "react";
-import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
-import Product from "./Product";
-import { getProducts } from "../store/products";
-import { Link } from "react-router-dom";
+import React, { useEffect } from 'react'
+import axios from 'axios'
+import { useSelector, useDispatch } from 'react-redux'
+import Product from './Product'
+import { getProducts } from '../store/products'
+import { Link } from 'react-router-dom'
 
 const Products = () => {
-  const dispatch = useDispatch();
-  const products = useSelector((state) => state.products);
+  const dispatch = useDispatch()
+  const products = useSelector((state) => state.products)
 
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const { data } = await axios.get("/api/products");
-        dispatch(getProducts(data));
+        const { data } = await axios.get('/api/products')
+        dispatch(getProducts(data))
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     }
-    fetchProducts();
-  }, []);
+    fetchProducts()
+  }, [])
 
   return !products ? (
     <div>Loading Products...</div>
@@ -27,13 +27,17 @@ const Products = () => {
     <div>
       {products.map((product) => (
         <div key={product.id}>
+          {/*
+            o: rather than using two brs here you can just add
+              padding to Product
+          */}
           <br />
           <Product product={product} />
           <br />
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default Products;
+export default Products

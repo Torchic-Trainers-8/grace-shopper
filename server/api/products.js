@@ -6,13 +6,10 @@ const Product = require('../db/models/Product')
 //make a middleware for admin auth
 const ensureAdmin = function (req, res, next) {
   if (req.isAuthenticated()) {
-    if (req.user.role === 'Admin') {
-      return next()
-    } else {
-      return res.redirect('/')
-    }
+    return next()
+  } else {
+    return res.redirect('/')
   }
-  res.redirect('/')
 }
 
 // /api/products
@@ -31,6 +28,7 @@ router.get('/', async (req, res, next) => {
 // /api/products/:id
 router.get('/:id', async (req, res, next) => {
   try {
+    // o: make sure to check for the case when resource is not found
     const product = await Product.findOne({
       where: { id: req.params.id },
     })
