@@ -93,54 +93,15 @@ async function seed() {
   console.log(`seeded ${users.length} users successfully`)
 }
 
-// const users = await Promise.all([
-//   User.create({
-//     username: "user1@gmail.com",
-//     password: "123",
-//   }),
-// ]);
-
-async function bulkCreateUser() {
-  for (let i = 4; i < 80; i++) {
-    await Promise.all([
-      User.create({
-        username: `user${i}@gmail.com`,
-        password: '123',
-        role: 'Customer',
-      }),
-    ])
-  }
-}
-const eightyUsers = bulkCreateUser()
-
 /*
  We've separated the `seed` function from the `runSeed` function.
  This way we can isolate the error handling and exit trapping.
  The `seed` function is concerned only with modifying the database.
 */
-// async function runSeed() {
-//   console.log('seeding...')
-//   try {
-//     await seed()
-//   } catch (err) {
-//     console.error(err)
-//     process.exitCode = 1
-//   } finally {
-//     console.log('closing db connection')
-//     await db.close()
-//     console.log('db connection closed')
-//   }
-// }
-
 async function runSeed() {
+  console.log('seeding...')
   try {
-    await db.sync({ force: true })
-
-    await Promise.all([
-      ...eightyUsers.map((user) => {
-        return User.create(user)
-      }),
-    ])
+    await seed()
   } catch (err) {
     console.error(err)
     process.exitCode = 1
