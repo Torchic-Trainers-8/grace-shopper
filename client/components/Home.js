@@ -13,32 +13,32 @@ const Home = () => {
   //isAdmin uses auth.role
   const isAdmin = role === 'Admin'
 
-  const products = useSelector((state) => state.products)
-  const users = useSelector((state) => state.users)
+  const products = useSelector((state) => state.products);
+  const users = useSelector((state) => state.users);
 
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const { data } = await axios.get('/api/users')
-        dispatch(getUsers(data))
+        const { data } = await axios.get("/api/users");
+        dispatch(getUsers(data));
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
     async function fetchProducts() {
       try {
-        const { data } = await axios.get('/api/products')
-        dispatch(getProducts(data))
+        const { data } = await axios.get("/api/products");
+        dispatch(getProducts(data));
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
     // isAdmin is a gatekeeper for fetching state
     if (isAdmin) {
-      fetchUsers()
-      fetchProducts()
+      fetchUsers();
+      fetchProducts();
     }
-  }, [])
+  }, []);
 
   // users list, click to bring up list (table?) component- delete button
 
@@ -47,6 +47,7 @@ const Home = () => {
   return isAdmin ? (
     <>
       <h2>Hello Admin {username}</h2>
+
       <Link to="/home/AdminUsers">See Users</Link>
       <Link to="/home/AdminProducts">See Products</Link>
       <Link to="/home/AdminAddProduct">Add Product</Link>
@@ -70,7 +71,7 @@ const Home = () => {
     <>
       <h3>Welcome, {username}</h3>
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
