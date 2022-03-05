@@ -88,9 +88,8 @@ export const productReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_PRODUCT:
       return action.product
-
     case EDIT_PRODUCT:
-      return state
+      return action.product
     //need to check state vs action.product
     case INCREASE_QUANTITY:
       return action.product

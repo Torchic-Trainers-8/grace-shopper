@@ -1,4 +1,6 @@
-export const GET_USERS = 'GET_USERS'
+import axios from 'axios'
+
+const GET_USERS = 'GET_USERS'
 
 export const getUsers = (users) => {
   return {
@@ -7,7 +9,9 @@ export const getUsers = (users) => {
   }
 }
 
-export default function (state = [], action) {
+const initialState = []
+
+export const usersReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_USERS:
       return action.users
