@@ -6,23 +6,18 @@ import { useSelector, useDispatch } from 'react-redux'
 
 const Home = (props) => {
   const dispatch = useDispatch()
-  const username = useSelector((state) => state.auth.username)
-  const role = useSelector((state) => state.user.role)
+  const { id, username, role } = useSelector((state) => state.auth)
   const isAdmin = role === 'Admin'
 
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const { data } = await axios.get('/api/products')
+        const { data } = await axios.get('/api/users')
         dispatch(getUsers(data))
       } catch (error) {
         console.log(error)
       }
     }
-    fetchUsers()
-  }, [])
-
-  useEffect(() => {
     async function fetchProducts() {
       try {
         const { data } = await axios.get('/api/products')
@@ -31,7 +26,10 @@ const Home = (props) => {
         console.log(error)
       }
     }
-    fetchProducts()
+    if (isAdmin) {
+      fetchUsers()
+      fetchProducts()
+    }
   }, [])
 
   // users list, click to bring up list (table?) component- delete button
