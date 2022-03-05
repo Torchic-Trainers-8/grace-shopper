@@ -1,18 +1,20 @@
-import React, { useEffect } from "react";
-import axios from "axios";
-import { getProducts } from "../store/products";
-import { getUsers } from "../store/users";
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useEffect } from 'react'
+import axios from 'axios'
+import { getProducts } from '../store/products'
+import { getUsers } from '../store/users'
+import { useSelector, useDispatch } from 'react-redux'
+import { Switch, Route, Link } from 'react-router-dom'
+import { AdminProducts } from './AdminProducts'
+import { AdminUsers } from './AdminUsers'
 
-const Home = (props) => {
-  const dispatch = useDispatch();
-  const { id, username, role } = useSelector((state) => state.auth);
+const Home = () => {
+  const dispatch = useDispatch()
+  const { id, username, role } = useSelector((state) => state.auth)
+  //isAdmin uses auth.role
+  const isAdmin = role === 'Admin'
 
   const products = useSelector((state) => state.products);
   const users = useSelector((state) => state.users);
-
-  const isAdmin = role === "Admin";
 
   useEffect(() => {
     async function fetchUsers() {
@@ -31,6 +33,7 @@ const Home = (props) => {
         console.log(error);
       }
     }
+    // isAdmin is a gatekeeper for fetching state
     if (isAdmin) {
       fetchUsers();
       fetchProducts();
@@ -44,46 +47,25 @@ const Home = (props) => {
   return isAdmin ? (
     <>
       <h2>Hello Admin {username}</h2>
-      <Link>See Users</Link>{" "}
-      {/* onClick will replace this with a table that maps users */}
-      <Link
-        onClick={() => {
-          return (
-            <table>
-              <th>id</th>
-              <th>title</th>
-              <th>qty</th>
-              <th>price</th>
-              {products.map((product) => (
-                <tr key={product.id}>
-                  <td>id: {product.id}</td>
-                  <td>name: {product.title}</td>
-                  <td>qty: {product.quantity}</td>
-                  <td>price: {product.price}</td>
-                </tr>
-              ))}
-            </table>
-          );
-        }}
-      >
-        See Products
-      </Link>{" "}
-      {/* onClick will replace this with a table that maps products */}
+
+      <Link to="/home/AdminUsers">See Users</Link>
+      <Link to="/home/AdminProducts">See Products</Link>
+      <Link to="/home/AdminAddProduct">Add Product</Link>
+      <Link to="/home">Clear</Link>
       {/* add product */}
-      {/* <table>
-        <th>id</th>
-        <th>title</th>
-        <th>qty</th>
-        <th>price</th>
-        {products.map((product) => (
-          <tr>
-            <td>id: {product.id}</td>
-            <td>name: {product.title}</td>
-            <td>qty: {product.quantity}</td>
-            <td>price: {product.price}</td>
-          </tr>
-        ))}
-      </table> */}
+      <Switch>
+        {/*Product Table*/}
+        <Route path="/home/AdminProducts">
+          <AdminProducts products={products} />
+        </Route>
+        {/* User Table*/}
+        <Route path="/home/AdminUsers">
+          <AdminUsers users={users} />
+        </Route>
+        <Route path="home/AdminAddProduct"></Route>
+        <Route path="home/AdminEditProduct/"></Route>
+        <Route path="home/cart"></Route>
+      </Switch>
     </>
   ) : (
     <>
