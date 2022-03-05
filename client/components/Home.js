@@ -1,41 +1,41 @@
-import React, { useEffect } from 'react'
-import axios from 'axios'
-import { getProducts } from '../store/products'
-import { getUsers } from '../store/users'
-import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from "react";
+import axios from "axios";
+import { getProducts } from "../store/products";
+import { getUsers } from "../store/users";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Home = (props) => {
-  const dispatch = useDispatch()
-  const { id, username, role } = useSelector((state) => state.auth)
+  const dispatch = useDispatch();
+  const { id, username, role } = useSelector((state) => state.auth);
 
-  const products = useSelector((state) => state.products)
-  const users = useSelector((state) => state.users)
+  const products = useSelector((state) => state.products);
+  const users = useSelector((state) => state.users);
 
-  const isAdmin = role === 'Admin'
+  const isAdmin = role === "Admin";
 
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const { data } = await axios.get('/api/users')
-        dispatch(getUsers(data))
+        const { data } = await axios.get("/api/users");
+        dispatch(getUsers(data));
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
     async function fetchProducts() {
       try {
-        const { data } = await axios.get('/api/products')
-        dispatch(getProducts(data))
+        const { data } = await axios.get("/api/products");
+        dispatch(getProducts(data));
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
     if (isAdmin) {
-      fetchUsers()
-      fetchProducts()
+      fetchUsers();
+      fetchProducts();
     }
-  }, [])
+  }, []);
 
   // users list, click to bring up list (table?) component- delete button
 
@@ -44,7 +44,8 @@ const Home = (props) => {
   return isAdmin ? (
     <>
       <h2>Hello Admin {username}</h2>
-      <Link>See Users</Link> {/* onClick will replace this with a table that maps users */}
+      <Link>See Users</Link>{" "}
+      {/* onClick will replace this with a table that maps users */}
       <Link
         onClick={() => {
           return (
@@ -62,10 +63,11 @@ const Home = (props) => {
                 </tr>
               ))}
             </table>
-          )
-        }}>
+          );
+        }}
+      >
         See Products
-      </Link>{' '}
+      </Link>{" "}
       {/* onClick will replace this with a table that maps products */}
       {/* add product */}
       {/* <table>
@@ -87,7 +89,7 @@ const Home = (props) => {
     <>
       <h3>Welcome, {username}</h3>
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
