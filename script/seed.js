@@ -58,14 +58,37 @@ async function seed() {
   stream.pipe(csvStream)
 
   // Creating Users
-  const users = await Promise.all([
-    User.create({ username: 'user1@gmail.com', password: '123', role: 'Admin' }),
-    User.create({
-      username: 'user2@gmail.com',
-      password: '123',
-      role: 'Customer',
-    }),
-  ])
+  // const users = await Promise.all([
+  //   User.create({
+  //     username: 'user1@gmail.com',
+  //     password: '123',
+  //     role: 'Admin',
+  //   }),
+  //   User.create({
+  //     username: 'user2@gmail.com',
+  //     password: '123',
+  //     role: 'Customer',
+  //   }),
+  // ])
+
+  const users = []
+  users.push({
+    username: 'user1@gmail.com',
+    password: '123',
+    role: 'Admin',
+  })
+
+  function userList() {
+    for (let i = 2; i < 80; i++) {
+      users.push({
+        username: `user${i}@gmail.com`,
+        password: '123',
+        role: 'Customer',
+      })
+    }
+  }
+  userList()
+  User.bulkCreate(users)
 
   console.log(`seeded ${users.length} users successfully`)
 }

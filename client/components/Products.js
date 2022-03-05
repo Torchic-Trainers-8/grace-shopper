@@ -27,6 +27,10 @@ const Products = () => {
     <div>
       {products.map((product) => (
         <div key={product.id}>
+          {/*
+            o: rather than using two brs here you can just add
+              padding to Product
+          */}
           <br />
           <Product product={product} />
           <br />
