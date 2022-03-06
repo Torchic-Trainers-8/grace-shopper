@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
-import { getProducts } from '../store/products'
-import { getUsers } from '../store/users'
+import { fetchUsers, fetchProducts, fetchUser } from '../store'
 import { useSelector, useDispatch } from 'react-redux'
 import { Switch, Route, Link } from 'react-router-dom'
-import { AdminProducts } from './AdminProducts'
-import { AdminUsers } from './AdminUsers'
+import AdminProducts from './AdminProducts'
+import AdminUsers from './AdminUsers'
+import AdminUser from './AdminUser'
+import Cart from './Cart'
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -13,32 +14,16 @@ const Home = () => {
   //isAdmin uses auth.role
   const isAdmin = role === 'Admin'
 
-  const products = useSelector((state) => state.products);
-  const users = useSelector((state) => state.users);
+  const products = useSelector((state) => state.products)
+  const users = useSelector((state) => state.users)
 
   useEffect(() => {
-    async function fetchUsers() {
-      try {
-        const { data } = await axios.get("/api/users");
-        dispatch(getUsers(data));
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    async function fetchProducts() {
-      try {
-        const { data } = await axios.get("/api/products");
-        dispatch(getProducts(data));
-      } catch (error) {
-        console.log(error);
-      }
-    }
     // isAdmin is a gatekeeper for fetching state
     if (isAdmin) {
-      fetchUsers();
-      fetchProducts();
+      dispatch(fetchUsers())
+      dispatch(fetchProducts())
     }
-  }, []);
+  }, [])
 
   // users list, click to bring up list (table?) component- delete button
 
@@ -50,28 +35,43 @@ const Home = () => {
 
       <Link to="/home/AdminUsers">See Users</Link>
       <Link to="/home/AdminProducts">See Products</Link>
-      <Link to="/home/AdminAddProduct">Add Product</Link>
-      <Link to="/home">Clear</Link>
       {/* add product */}
+      <Link to="/home/AdminAddProduct">Add Product</Link>
+      {/* "refresh" without refreshing */}
+      <Link to="/home">Clear</Link>
+      <Link to="/home/cart">Cart</Link>
       <Switch>
-        {/*Product Table*/}
-        <Route path="/home/AdminProducts">
-          <AdminProducts products={products} />
-        </Route>
-        {/* User Table*/}
-        <Route path="/home/AdminUsers">
-          <AdminUsers users={users} />
-        </Route>
-        <Route path="home/AdminAddProduct"></Route>
-        <Route path="home/AdminEditProduct/"></Route>
-        <Route path="home/cart"></Route>
+        <Switch>
+          {/*Product Table*/}
+          <Route path="/home/AdminProducts">
+            <AdminProducts products={products} />
+          </Route>
+          <Route path="home/AdminAddProduct"></Route>
+          <Route path="home/AdminEditProduct/"></Route>
+          {/* User Table*/}
+          <Route exact path="/home/AdminUsers">
+            <AdminUsers users={users} />
+          </Route>
+          <Route path={`/home/AdminUsers/:id`} component={AdminUser} />
+          {/* User Cart*/}
+          <Route path="/home/cart">
+            <Cart />
+          </Route>
+        </Switch>
       </Switch>
     </>
   ) : (
     <>
       <h3>Welcome, {username}</h3>
+      <Link to="/home">Clear</Link>
+      <Link to="/home/cart">Cart</Link>
+      <Switch>
+        <Route path="/home/cart">
+          <Cart />
+        </Route>
+      </Switch>
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

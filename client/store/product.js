@@ -35,26 +35,25 @@ export const decreaseQuantity = (product) => {
 
 //THUNCTIONS
 
-// export const fetchProduct = () => {
-//   return async (dispatch) => {
-//     try {
-//       const response = await axios.get(`/api/products/${product.id}`);
-//       const data = response.data;
-//       dispatch(getProduct(data));
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-// };
+export const fetchProduct = (id) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`/api/products/${id}`)
+      const data = response.data
+      dispatch(getProduct(data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
 
 export const editedProductThunk = (editedProduct, history) => {
   return async (dispatch) => {
     try {
-      const { productId } = editedProduct
-      const response = await axios.put(`/api/products`, editedProduct)
-      const data = response.data
+      const { id } = editedProduct
+      const { data } = await axios.put(`/api/products`, editedProduct)
       dispatch(editProduct(data))
-      history.push(`/api/products/${productId}`)
+      history.push(`/api/products/${id}`)
     } catch (error) {
       console.log(error)
     }
@@ -84,19 +83,16 @@ export const decreaseProductThunk = (id) => {
 }
 const initialState = {}
 
-export const productReducer = (state = initialState, action) => {
+export default function (state = initialState, action) {
   switch (action.type) {
     case GET_PRODUCT:
       return action.product
     case EDIT_PRODUCT:
       return action.product
-    //need to check state vs action.product
     case INCREASE_QUANTITY:
       return action.product
-    //need to check state vs action.product
     case DECREASE_QUANTITY:
       return action.product
-    //need to check state vs action.product
     default:
       return state
   }
