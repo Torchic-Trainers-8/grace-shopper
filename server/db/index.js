@@ -14,15 +14,14 @@ const PurchaseHistory = require('./models/PurchaseHistory');
 //associations could go here!
 
 // o: there are some issues with this cart setup
-Product.belongsToMany(User, { through: Cart });
-User.belongsToMany(Product, { through: Cart });
+// Product.belongsToMany(User, { through: Cart });
+// User.belongsToMany(Product, { through: Cart });
 
 User.hasMany(Order);
 Order.belongsTo(User);
 
-//Uncomment once done with tier 1
-// Order.belongsToMany(Product, {throught: Cart})
-// Product.belongsToMany(Order, {throught: Cart})
+Order.belongsToMany(Product, { through: Cart });
+Product.belongsToMany(Order, { through: Cart });
 
 // o: let's talk about purchase history, wishlist, tags and payment info
 User.hasMany(PurchaseHistory);
