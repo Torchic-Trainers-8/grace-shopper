@@ -37,6 +37,7 @@ const Routes = () => {
           </Route>
           <Route path="/login">{Login}</Route>
           <Route path="/signup">{Signup}</Route>
+          <Route path="/Cart" component={Cart} />
           <Route exact path="/products" component={Products} />
           <Route path="/products/:id" component={SingleProduct} />
         </Switch>

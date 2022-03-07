@@ -2,10 +2,19 @@ import axios from "axios";
 
 const ADD_TO_CART = "ADD_TO_CART";
 
+const GET_CART = "GET_CART";
+
 export const addToCart = (product) => {
   return {
     type: ADD_TO_CART,
     product,
+  };
+};
+
+export const getCart = (cart) => {
+  return {
+    type: GET_CART,
+    cart,
   };
 };
 
