@@ -9,6 +9,7 @@ const User = require('../db/models/User');
 router.get('/', async (req, res, next) => {
   try {
     const carts = await Cart.findAll();
+    console.log(req);
     res.send(carts);
   } catch (error) {
     console.error('No carts found');
@@ -16,9 +17,9 @@ router.get('/', async (req, res, next) => {
 });
 
 // /api/carts
-router.post('/addToCart/:userId/:productId', async (req, res, next) => {
+router.post('/addToCart/:productId', async (req, res, next) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.user.id;
     const productId = req.params.productId;
     const newCart = await Cart.create({
       userId,
@@ -91,7 +92,16 @@ router.delete('/deleteCart/:userId/:productId', async (req, res, next) => {
   }
 });
 
-// /api/carts/:id
+// /api/carts/:userId
+// grabs all carts, do a filter after the fact
+// on order history page filter by isPlaced true
+// on cart pages filter by isPlaced false
+// use to get total qty of all items in cart
+
+// cart has 3 items. Each item has qty, we add the qty of each item, and return it as the cart total qty.
+
+// place total qty in "Go to Cart(#)" link in nav
+// total qty calculation in cart view
 router.get('/:id', async (req, res, next) => {
   try {
     const userId = req.params.id;

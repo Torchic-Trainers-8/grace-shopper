@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const GET_USERS = 'GET_USERS'
+export const GET_USERS = 'GET_USERS'
 
 export const getUsers = (users) => {
   return {
@@ -9,9 +9,20 @@ export const getUsers = (users) => {
   }
 }
 
+export const fetchUsers = () => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get('/api/users')
+      dispatch(getUsers(data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
 const initialState = []
 
-export const usersReducer = (state = initialState, action) => {
+export default function (state = initialState, action) {
   switch (action.type) {
     case GET_USERS:
       return action.users

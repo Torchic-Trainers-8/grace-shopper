@@ -15,8 +15,9 @@ const {
 } = require('../server/db/index');
 const fs = require('fs');
 const fastcsv = require('fast-csv');
-const Pool = require('pg').Pool;
+const { Client } = require('pg');
 
+let client;
 let stream = fs.createReadStream('data/Yarn-Seed-File.csv');
 let csvData = [];
 let csvStream = fastcsv
@@ -24,37 +25,29 @@ let csvStream = fastcsv
   .on('data', function (data) {
     csvData.push(data);
   })
-  .on('end', function () {
-    // remove the first line: header
+  .on('end', async function () {
     csvData.shift();
-    // connect to the PostgreSQL database
-    // save csvData
-    const pool = new Pool({
-      host: 'localhost',
-      user: 'postgres',
-      database: 'grace-shopper',
-      password: '',
-      port: 5432,
-    });
+    if (process.env.DATABASE_URL) {
+      client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+          rejectUnauthorized: false
+        }
+      });
+    } else {
+      client = new Client({
+        connectionString: 'postgres://localhost:5432/grace-shopper'
+      });
+    }
     const query =
-      'INSERT INTO PRODUCTS (title, description, image, price, quantity, weight, color) VALUES ($1, $2, $3, $4, $5, $6, $7)';
-    pool.connect((err, client, done) => {
-      if (err) throw err;
-      try {
-        csvData.forEach((row) => {
-          client.query(query, row, (err, res) => {
-            if (err) {
-              console.log(err.stack);
-            } else {
-              // console.log('inserted ' + res.rowCount + ' row:', row);
-            }
-          });
-        });
-      } finally {
-        console.log(`seeded ${csvData.length} products successfully`);
-        done();
-      }
+    'INSERT INTO PRODUCTS (title, description, image, price, quantity, weight, color) VALUES ($1, $2, $3, $4, $5, $6, $7)';
+    client.connect();
+    const queries = [];
+    csvData.forEach((row) => {
+       queries.push(client.query(query, row))
+
     });
+    await Promise.all(queries).then(() => client.end())
   });
 
 /**
@@ -62,7 +55,7 @@ let csvStream = fastcsv
  *      match the models, and populates the database.
  */
 async function seed() {
-  await db.sync({ force: true }); // clears db and matches models to tables
+  await db.sync({ force: true });
   console.log('db synced!');
   stream.pipe(csvStream);
 
@@ -79,6 +72,7 @@ async function seed() {
   //     role: 'Customer',
   //   }),
   // ])
+
 
   const users = [];
   users.push({

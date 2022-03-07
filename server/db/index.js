@@ -4,7 +4,7 @@ const db = require('./db');
 const Product = require('./models/Product');
 const User = require('./models/User');
 const Cart = require('./models/Cart');
-const Order = require('./models/Order_History');
+const Order = require('./models/Order');
 const Tag = require('./models/Tag');
 const PaymentInfo = require('./models/PaymentInfo');
 const Wishlist = require('./models/Wishlist');
@@ -14,15 +14,14 @@ const PurchaseHistory = require('./models/PurchaseHistory');
 //associations could go here!
 
 // o: there are some issues with this cart setup
-Product.belongsToMany(User, { through: Cart });
-User.belongsToMany(Product, { through: Cart });
+// Product.belongsToMany(User, { through: Cart });
+// User.belongsToMany(Product, { through: Cart });
 
 User.hasMany(Order);
 Order.belongsTo(User);
 
-//Uncomment once done with tier 1
-// Order.belongsToMany(Product, {throught: Cart})
-// Product.belongsToMany(Order, {throught: Cart})
+Order.belongsToMany(Product, { through: Cart });
+Product.belongsToMany(Order, { through: Cart });
 
 // o: let's talk about purchase history, wishlist, tags and payment info
 User.hasMany(PurchaseHistory);

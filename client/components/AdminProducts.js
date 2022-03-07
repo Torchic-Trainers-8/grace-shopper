@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export const AdminProducts = (props) => {
+export default function (props) {
   const products = props.products
   return (
     <>

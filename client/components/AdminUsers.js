@@ -1,7 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Switch, Route } from 'react-router-dom'
+import AdminUser from './AdminUser'
 
-export const AdminUsers = (props) => {
+export default function (props) {
   const users = props.users
   return (
     <table>
@@ -17,13 +18,11 @@ export const AdminUsers = (props) => {
           {users.map((user) => (
             <tr key={user.id}>
               <td>{user.id}</td>
-              <td>
-                <Link>{user.username}</Link>
-              </td>
+              <td>{user.username}</td>
               <td>{user.role}</td>
               <td>
-                <button>edit</button>
-                <button>delete</button>
+                <Link to={`/home/AdminUsers/${user.id}`}>edit</Link>
+                {/* <Link to={`/home/AdminDeleteUser/${user.id}`}>delete</Link> */}
               </td>
             </tr>
           ))}
