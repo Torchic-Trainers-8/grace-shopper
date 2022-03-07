@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const Product = require('../db/models/Product')
+const { requireToken, isAdmin} = require('./gatekeepingMiddleware')
 
 //PRODUCTS GET ROUTER
 
@@ -26,7 +27,7 @@ router.get('/', async (req, res, next) => {
 })
 
 // /api/products/create
-router.post('/create', async (req, res, next) => {
+router.post('/create', requireToken, isAdmin, async (req, res, next) => {
   try {
     const product = await Product.create({
       ...req.body,
@@ -56,7 +57,7 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', requireToken, isAdmin, async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: { id: req.params.id },
@@ -68,7 +69,7 @@ router.put('/:id', async (req, res, next) => {
   }
 })
 
-router.put('/:id/update', async (req, res, next) => {
+router.put('/:id/update', requireToken, isAdmin, async (req, res, next) => {
   try {
     const id = req.params.id
     const product = await Product.findOne({
@@ -84,7 +85,7 @@ router.put('/:id/update', async (req, res, next) => {
   }
 })
 
-router.put('/:id/update/increase', async (req, res, next) => {
+router.put('/:id/update/increase', requireToken, isAdmin, async (req, res, next) => {
   try {
     const id = req.params.id
     const product = await Product.findOne({
@@ -102,7 +103,7 @@ router.put('/:id/update/increase', async (req, res, next) => {
   }
 })
 
-router.put('/:id/update/decrease', async (req, res, next) => {
+router.put('/:id/update/decrease', requireToken, isAdmin, async (req, res, next) => {
   try {
     const id = req.params.id
     const product = await Product.findOne({
@@ -120,7 +121,7 @@ router.put('/:id/update/decrease', async (req, res, next) => {
   }
 })
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', requireToken, isAdmin, async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: { id: req.params.id },
