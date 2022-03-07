@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const axios = require('axios');
 const Cart = require('../db/models/Cart');
 const Product = require('../db/models/Product');
 const User = require('../db/models/User');
@@ -16,35 +17,36 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+//will need to update users once auth is finialized
 // /api/carts
-router.post('/addToCart/:productId', async (req, res, next) => {
+router.post('/addToCart/:orderId/:productId', async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const orderId = req.params.orderId;
     const productId = req.params.productId;
-    const newCart = await Cart.create({
-      userId,
-      productId,
-      cartQty: 1,
+    const [cart, created] = await Cart.findOrCreate({
+      where: { orderId, productId },
     });
-    res.status(201).send(newCart);
+    res
+      .status(200)
+      .send(await cart.update({ ...cart, cartQty: cart.cartQty + 1 }));
   } catch (error) {
-    console.error('No product found');
+    console.error('Errored on add to cart');
   }
 });
 
 //in redux determine if it exists, if it does direct to put, if it doesn't direct to create
-router.put('/increaseCart/:userId/:productId', async (req, res, next) => {
+router.put('/increaseCart/:orderId/:productId', async (req, res, next) => {
   try {
-    const userId = req.params.userId;
+    const orderId = req.params.orderId;
     const productId = req.params.productId;
     const cart = await Cart.findOne({
       where: {
-        userId,
+        orderId,
         productId,
       },
     });
     const newCart = await cart.update({
-      userId,
+      orderId,
       productId,
       cartQty: cart.cartQty + 1,
     });
@@ -54,18 +56,18 @@ router.put('/increaseCart/:userId/:productId', async (req, res, next) => {
   }
 });
 
-router.put('/decreaseCart/:userId/:productId', async (req, res, next) => {
+router.put('/decreaseCart/:orderId/:productId', async (req, res, next) => {
   try {
-    const userId = req.params.userId;
+    const orderId = req.params.orderId;
     const productId = req.params.productId;
     const cart = await Cart.findOne({
       where: {
-        userId,
+        orderId,
         productId,
       },
     });
     const newCart = await cart.update({
-      userId,
+      orderId,
       productId,
       cartQty: cart.cartQty - 1,
     });
@@ -75,18 +77,18 @@ router.put('/decreaseCart/:userId/:productId', async (req, res, next) => {
   }
 });
 
-router.delete('/deleteCart/:userId/:productId', async (req, res, next) => {
+router.delete('/deleteCart/:orderId/:productId', async (req, res, next) => {
   try {
-    const userId = req.params.userId;
+    const orderId = req.params.orderId;
     const productId = req.params.productId;
     const cart = await Cart.findOne({
       where: {
-        userId,
+        orderId,
         productId,
       },
     });
     const newCart = await cart.destroy();
-    res.status(204).send(`Deleted ${productId} from ${userId}`);
+    res.status(204).send(`Deleted ${productId} from ${orderId}`);
   } catch (error) {
     console.error('No product found');
   }
