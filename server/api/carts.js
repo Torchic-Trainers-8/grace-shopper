@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const axios = require('axios');
 const Cart = require('../db/models/Cart');
 const Product = require('../db/models/Product');
 const User = require('../db/models/User');
