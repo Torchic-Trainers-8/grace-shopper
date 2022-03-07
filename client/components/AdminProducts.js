@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+// o: you can destructure right in the argument definition
 export default function (props) {
   const products = props.products
   return (

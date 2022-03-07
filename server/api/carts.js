@@ -16,10 +16,14 @@ const User = require('../db/models/User')
 // });
 
 // /api/carts
+// o: you don't need to pass the userId in since you already have req.user
 router.post('/addToCart/:userId/:productId', async (req, res, next) => {
   try {
     const userId = req.params.userId
     const productId = req.params.productId
+
+    // o: what if the cart already exists? try (findOrCreate)
+    //  https://sequelize.org/master/manual/model-querying-finders.html
     const newCart = await Cart.create({
       userId,
       productId,
@@ -32,16 +36,20 @@ router.post('/addToCart/:userId/:productId', async (req, res, next) => {
 })
 
 //in redux determine if it exists, if it does direct to put, if it doesn't direct to create
+// o: you don't need to pass the userId in since you already have req.user
 router.put('/increaseCart/:userId/:productId', async (req, res, next) => {
   try {
     const userId = req.params.userId
     const productId = req.params.productId
+
+    // o: check for when resource not found
     const cart = await Cart.findOne({
       where: {
         userId,
         productId,
       },
     })
+
     const newCart = await cart.update({
       userId,
       productId,
@@ -53,6 +61,7 @@ router.put('/increaseCart/:userId/:productId', async (req, res, next) => {
   }
 })
 
+// o: you don't need to pass the userId in since you already have req.user
 router.put('/decreaseCart/:userId/:productId', async (req, res, next) => {
   try {
     const userId = req.params.userId
@@ -74,6 +83,7 @@ router.put('/decreaseCart/:userId/:productId', async (req, res, next) => {
   }
 })
 
+// o: you don't need to pass the userId in since you already have req.user
 router.delete('/deleteCart/:userId/:productId', async (req, res, next) => {
   try {
     const userId = req.params.userId
@@ -101,6 +111,7 @@ router.delete('/deleteCart/:userId/:productId', async (req, res, next) => {
 
 // place total qty in "Go to Cart(#)" link in nav
 // total qty calculation in cart view
+// o: you don't need to pass the userId in since you already have req.user
 router.get('/:id', async (req, res, next) => {
   try {
     const userId = req.params.id
