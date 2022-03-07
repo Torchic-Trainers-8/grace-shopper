@@ -13,6 +13,7 @@ const PurchaseHistory = require('./models/PurchaseHistory');
 
 //associations could go here!
 
+
 // o: there are some issues with this cart setup
 Product.belongsToMany(User, { through: Cart })
 User.belongsToMany(Product, { through: Cart })
