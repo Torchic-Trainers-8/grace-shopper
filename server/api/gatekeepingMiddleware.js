@@ -1,8 +1,4 @@
-// Stores all functions for security middleware
-
-const {
-  models: { User },
-} = require('../db/')
+const User = require("../db/models/User");
 
 const requireToken = async (req, res, next) => {
   try {
@@ -14,6 +10,15 @@ const requireToken = async (req, res, next) => {
   }
 }
 
+const isAdmin = async (req, res, next) => {
+  if(req.user.role !== "Admin") {
+    return res.status(403).send('Admin permissions required');
+  } else {
+    next();
+  }
+}
+
 module.exports = {
   requireToken,
+  isAdmin
 }
