@@ -33,12 +33,18 @@ let csvStream = fastcsv
     const query =
       'INSERT INTO PRODUCTS (title, description, image, price, quantity, weight, color) VALUES ($1, $2, $3, $4, $5, $6, $7)'
     client.connect()
+    console.log("Client Connected");
     const queries = []
     csvData.forEach((row) => {
       queries.push(client.query(query, row))
     })
-    await Promise.all(queries).then(() => client.end())
-    console.log(`seeded ${queries.length} products...`)
+    await Promise.all(queries)
+      .then(() => {
+        console.log("Made it to then statement");
+        client.end()
+      })
+      .catch(error => console.log("Here is your error", error))
+      console.log(`seeded ${queries.length} products...`)
   })
 
 /**
@@ -100,7 +106,7 @@ async function runSeed() {
     process.exitCode = 1
   } finally {
     console.log('closing db connection')
-    await db.close()
+    // await db.close()
     console.log('db connection closed')
   }
 }
