@@ -20,6 +20,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   try {
     const userId = req.params.id;
+
     const cart = await Cart.findAll({
       where: { userId },
     });
@@ -29,8 +30,10 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+// o: should you be searching for cart by cartId or by userId?
 router.get("/:id/products", async (req, res, next) => {
   try {
+    // o: check for when cart is not found
     const cart = await Cart.findOne({
       where: { id: req.params.id },
     });

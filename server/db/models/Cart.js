@@ -8,6 +8,7 @@ const Cart = db.define(
       type: Sequelize.INTEGER,
       allowNull: false,
     },
+    // o: you should remove the commented out code
     // createdAt: {
     //   type: Sequelize.DATE,
     //   allowNull: true,
