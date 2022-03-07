@@ -25,7 +25,7 @@ let csvStream = fastcsv
   .on('data', function (data) {
     csvData.push(data);
   })
-  .on('end', function () {
+  .on('end', async function () {
     csvData.shift();
     if (process.env.DATABASE_URL) {
       client = new Client({
@@ -42,14 +42,11 @@ let csvStream = fastcsv
     const query =
       'INSERT INTO PRODUCTS (id, title, description, image, price, quantity, weight, color) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
     client.connect();
+    const queries = [];
     csvData.forEach((row) => {
-      client.query(query, row, (error) => {
-        if (error) {
-          console.log(error.stack);
-        }
-        client.end();
-      })
+       queries.push(client.query(query, row))
     });
+    await Promise.all(queries).then(() => client.end())
   });
 
 /**
