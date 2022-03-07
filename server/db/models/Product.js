@@ -1,5 +1,5 @@
-const { Sequelize, DataTypes, Model } = require('sequelize');
-const db = require('../db');
+const { Sequelize, DataTypes, Model } = require('sequelize')
+const db = require('../db')
 
 const Product = db.define(
   'product',
@@ -17,7 +17,7 @@ const Product = db.define(
     description: {
       type: Sequelize.TEXT,
     },
-    // o: should be a DECIMAL with precision of 2
+    // o: should be a DECIMAL with precision of 2 **
     price: {
       type: Sequelize.DECIMAL(2),
     },
@@ -30,8 +30,7 @@ const Product = db.define(
     },
     image: {
       type: Sequelize.STRING,
-      defaultValue:
-        'https://brownsheep.com/wp-content/uploads/2020/01/wildfoote.jpg',
+      defaultValue: 'https://brownsheep.com/wp-content/uploads/2020/01/wildfoote.jpg',
     },
     weight: {
       type: Sequelize.STRING,
@@ -41,6 +40,6 @@ const Product = db.define(
     },
   },
   { timestamps: false }
-);
+)
 
-module.exports = Product;
+module.exports = Product

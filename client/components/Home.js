@@ -40,6 +40,8 @@ const Home = () => {
       {/* "refresh" without refreshing */}
       <Link to="/home">Clear</Link>
       <Link to="/home/cart">Cart</Link>
+
+      {/* Begin Switches*/}
       <Switch>
         <Switch>
           {/*Product Table*/}

@@ -1,22 +1,22 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const db = require('../db');
+const { Sequelize, DataTypes } = require('sequelize')
+const db = require('../db')
 
-const PurchaseHistory = db.define ('purchase_history', {
+const PurchaseHistory = db.define('purchase_history', {
   quantity: {
     type: Sequelize.INTEGER,
     allowNull: false,
     validator: {
-      notEmpty: true
-    }
+      notEmpty: true,
+    },
   },
-  // o: should be a DECIMAL with precision of 2
+  // o: should be a DECIMAL with precision of 2 **
   price: {
     type: Sequelize.DECIMAL(2),
     allowNull: false,
     validator: {
-      notEmpty: true
-    }
-  }
-});
+      notEmpty: true,
+    },
+  },
+})
 
-module.exports = PurchaseHistory;
+module.exports = PurchaseHistory
