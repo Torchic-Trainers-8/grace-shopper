@@ -6,14 +6,15 @@ const User = require('../db/models/User')
 //PRODUCTS GET ROUTER
 
 // /api/carts
-// router.get('/', async (req, res, next) => {
-//   try {
-//     const carts = await Cart.findAll();
-//     res.send(carts);
-//   } catch (error) {
-//     console.error('No carts found');
-//   }
-// });
+router.get('/', async (req, res, next) => {
+  try {
+    const carts = await Cart.findAll()
+    console.log(req)
+    res.send(carts)
+  } catch (error) {
+    console.error('No carts found')
+  }
+})
 
 // /api/carts
 // o: you don't need to pass the userId in since you already have req.user
