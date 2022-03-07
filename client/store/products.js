@@ -2,11 +2,9 @@ import axios from 'axios'
 
 //Action Types
 
-const GET_PRODUCTS = 'GET_PRODUCTS'
-
-const ADD_PRODUCT = 'ADD_PRODUCT'
-
-const DELETE_PRODUCT = 'DELETE_PRODUCT'
+export const GET_PRODUCTS = 'GET_PRODUCTS'
+export const ADD_PRODUCT = 'ADD_PRODUCT'
+export const DELETE_PRODUCT = 'DELETE_PRODUCT'
 
 //Action Creators
 
@@ -33,18 +31,16 @@ export const deleteProduct = (id) => {
 
 //Thunktions
 
-// export const fetchProducts = () => {
-//   return async (dispatch) => {
-//     try {
-//       const response = await axios.get('/api/products')
-//       const data = response.data
-//       console.log('Got products')
-//       dispatch(getProducts(data))
-//     } catch (error) {
-//       console.log(error)
-//     }
-//   }
-// }
+export const fetchProducts = () => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get('/api/products')
+      dispatch(getProducts(data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
 
 export const addProductThunk = (newProduct) => {
   return async (dispatch) => {
@@ -63,7 +59,6 @@ export const deleteProductThunk = (productId, history) => {
     try {
       const response = await axios.delete(`/api/products/${productId}`)
       const data = response.data
-      console.log('this is delete prod thunk')
       dispatch(deleteProduct(data))
       history.push(`/api/products`)
     } catch (error) {
@@ -73,7 +68,7 @@ export const deleteProductThunk = (productId, history) => {
 }
 const initialState = []
 
-export const productsReducer = (state = initialState, action) => {
+export default function (state = initialState, action) {
   switch (action.type) {
     case GET_PRODUCTS:
       return action.products
