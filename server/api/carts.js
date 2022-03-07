@@ -1,20 +1,20 @@
-const router = require('express').Router();
-const Cart = require('../db/models/Cart');
-const Product = require('../db/models/Product');
-const User = require('../db/models/User');
+const router = require('express').Router()
+const Cart = require('../db/models/Cart')
+const Product = require('../db/models/Product')
+const User = require('../db/models/User')
 
 //PRODUCTS GET ROUTER
 
 // /api/carts
 router.get('/', async (req, res, next) => {
   try {
-    const carts = await Cart.findAll();
-    console.log(req);
-    res.send(carts);
+    const carts = await Cart.findAll()
+    console.log(req)
+    res.send(carts)
   } catch (error) {
-    console.error('No carts found');
+    console.error('No carts found')
   }
-});
+})
 
 // /api/carts
 // o: you don't need to pass the userId in since you already have req.user
@@ -29,12 +29,12 @@ router.post('/addToCart/:userId/:productId', async (req, res, next) => {
       userId,
       productId,
       cartQty: 1,
-    });
-    res.status(201).send(newCart);
+    })
+    res.status(201).send(newCart)
   } catch (error) {
-    console.error('No product found');
+    console.error('No product found')
   }
-});
+})
 
 //in redux determine if it exists, if it does direct to put, if it doesn't direct to create
 // o: you don't need to pass the userId in since you already have req.user
@@ -55,52 +55,52 @@ router.put('/increaseCart/:userId/:productId', async (req, res, next) => {
       userId,
       productId,
       cartQty: cart.cartQty + 1,
-    });
-    res.status(200).send(newCart);
+    })
+    res.status(200).send(newCart)
   } catch (error) {
-    console.error('No product found');
+    console.error('No product found')
   }
-});
+})
 
 // o: you don't need to pass the userId in since you already have req.user
 router.put('/decreaseCart/:userId/:productId', async (req, res, next) => {
   try {
-    const userId = req.params.userId;
-    const productId = req.params.productId;
+    const userId = req.params.userId
+    const productId = req.params.productId
     const cart = await Cart.findOne({
       where: {
         userId,
         productId,
       },
-    });
+    })
     const newCart = await cart.update({
       userId,
       productId,
       cartQty: cart.cartQty - 1,
-    });
-    res.status(200).send(newCart);
+    })
+    res.status(200).send(newCart)
   } catch (error) {
-    console.error('No product found');
+    console.error('No product found')
   }
-});
+})
 
 // o: you don't need to pass the userId in since you already have req.user
 router.delete('/deleteCart/:userId/:productId', async (req, res, next) => {
   try {
-    const userId = req.params.userId;
-    const productId = req.params.productId;
+    const userId = req.params.userId
+    const productId = req.params.productId
     const cart = await Cart.findOne({
       where: {
         userId,
         productId,
       },
-    });
-    const newCart = await cart.destroy();
-    res.status(204).send(`Deleted ${productId} from ${userId}`);
+    })
+    const newCart = await cart.destroy()
+    res.status(204).send(`Deleted ${productId} from ${userId}`)
   } catch (error) {
-    console.error('No product found');
+    console.error('No product found')
   }
-});
+})
 
 // /api/carts/:userId
 // grabs all carts, do a filter after the fact
@@ -115,14 +115,14 @@ router.delete('/deleteCart/:userId/:productId', async (req, res, next) => {
 // o: you don't need to pass the userId in since you already have req.user
 router.get('/:id', async (req, res, next) => {
   try {
-    const userId = req.params.id;
+    const userId = req.params.id
     const cart = await Cart.findAll({
       where: { userId },
-    });
-    res.send(cart);
+    })
+    res.send(cart)
   } catch (error) {
-    console.error('No user cart found');
+    console.error('No user cart found')
   }
-});
+})
 
-module.exports = router;
+module.exports = router
