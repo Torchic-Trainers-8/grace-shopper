@@ -77,7 +77,7 @@ router.post('/findOrCreateOrder/:userId', async (req, res, next) => {
       },
     });
 
-    res.status(201).send(order);
+    res.status(201).json(order);
   } catch (error) {
     console.error('No Order found');
   }
