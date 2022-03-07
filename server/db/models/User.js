@@ -1,8 +1,7 @@
-const Sequelize = require('sequelize')
+const { Sequelize, DataTypes, Model } = require('sequelize')
 const db = require('../db')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-
 
 
 const SALT_ROUNDS = 5
@@ -24,8 +23,9 @@ const User = db.define('user', {
   phoneNumber: {
     type: Sequelize.STRING,
   },
+  // o: let's talk about this setup
   role: {
-    type: Sequelize.ENUM('Admin', 'Customer', 'Mercheant'),
+    type: Sequelize.ENUM('Admin', 'Customer', 'Merchant'),
     allowNull: false,
     validate: {
       notEmpty: true,

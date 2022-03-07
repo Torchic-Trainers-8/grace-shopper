@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import Product from './Product'
-import { getProducts } from '../store/products'
+import { fetchProducts } from '../store/'
 import { Link } from 'react-router-dom'
 
 const Products = () => {
@@ -10,15 +10,7 @@ const Products = () => {
   const products = useSelector((state) => state.products)
 
   useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const { data } = await axios.get('/api/products')
-        dispatch(getProducts(data))
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchProducts()
+    dispatch(fetchProducts())
   }, [])
 
   return !products ? (
@@ -27,6 +19,10 @@ const Products = () => {
     <div>
       {products.map((product) => (
         <div key={product.id}>
+          {/*
+            o: rather than using two brs here you can just add
+              padding to Product
+          */}
           <br />
           <Product product={product} />
           <br />

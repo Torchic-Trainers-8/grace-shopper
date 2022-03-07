@@ -40,11 +40,12 @@ let csvStream = fastcsv
       });
     }
     const query =
-      'INSERT INTO PRODUCTS (id, title, description, image, price, quantity, weight, color) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
+    'INSERT INTO PRODUCTS (title, description, image, price, quantity, weight, color) VALUES ($1, $2, $3, $4, $5, $6, $7)';
     client.connect();
     const queries = [];
     csvData.forEach((row) => {
        queries.push(client.query(query, row))
+
     });
     await Promise.all(queries).then(() => client.end())
   });
@@ -58,18 +59,41 @@ async function seed() {
   console.log('db synced!');
   stream.pipe(csvStream);
 
-  const users = await Promise.all([
-    User.create({ username: 'user1@gmail.com', password: '123', role: 'Admin' }),
-    User.create({
-      username: 'user2@gmail.com',
-      password: '123',
-      role: 'Customer',
-    }),
-  ]);
+  // Creating Users
+  // const users = await Promise.all([
+  //   User.create({
+  //     username: 'user1@gmail.com',
+  //     password: '123',
+  //     role: 'Admin',
+  //   }),
+  //   User.create({
+  //     username: 'user2@gmail.com',
+  //     password: '123',
+  //     role: 'Customer',
+  //   }),
+  // ])
 
 
-  console.log(`seeded ${users.length} users`);
-  console.log(`seeded successfully`);
+  const users = [];
+  users.push({
+    username: 'user1@gmail.com',
+    password: '123',
+    role: 'Admin',
+  });
+
+  function userList() {
+    for (let i = 2; i < 80; i++) {
+      users.push({
+        username: `user${i}@gmail.com`,
+        password: '123',
+        role: 'Customer',
+      });
+    }
+  }
+  userList();
+  User.bulkCreate(users);
+
+  console.log(`seeded ${users.length} users successfully`);
 }
 
 /*

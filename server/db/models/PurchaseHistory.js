@@ -9,8 +9,9 @@ const PurchaseHistory = db.define ('purchase_history', {
       notEmpty: true
     }
   },
+  // o: should be a DECIMAL with precision of 2
   price: {
-    type: Sequelize.DOUBLE,
+    type: Sequelize.DECIMAL(2),
     allowNull: false,
     validator: {
       notEmpty: true

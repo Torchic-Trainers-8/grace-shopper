@@ -4,12 +4,12 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 import { Login, Signup } from './components/AuthForm'
 import Home from './components/Home'
 import Products from './components/Products'
+import Admin from './components/Admin'
 import SingleProduct from './components/SingleProduct'
+import Cart from './components/Cart'
+import EditProduct from './components/EditProduct'
+import Error404 from './components/Error404'
 import { me } from './store'
-
-/**
- * COMPONENT
- */
 
 const Routes = () => {
   const isLoggedIn = useSelector((state) => !!state.auth.id)
@@ -24,9 +24,12 @@ const Routes = () => {
       {isLoggedIn ? (
         <Switch>
           <Route path="/home" component={Home} />
-          <Redirect to="/home" />
           <Route exact path="/products" component={Products} />
           <Route path="/products/:id" component={SingleProduct} />
+          <Route exact path="/Admin" component={Admin} />
+          <Route path="/Admin/EditProduct" component={EditProduct} />
+          <Route path="/Cart" component={Cart} />
+          <Redirect to="/home" />
         </Switch>
       ) : (
         <Switch>
@@ -37,6 +40,8 @@ const Routes = () => {
           <Route path="/signup">{Signup}</Route>
           <Route exact path="/products" component={Products} />
           <Route path="/products/:id" component={SingleProduct} />
+          <Route path="/Cart" component={Cart} />
+          <Route path="*" component={Error404} />
         </Switch>
       )}
     </div>
@@ -44,7 +49,3 @@ const Routes = () => {
 }
 
 export default Routes
-/*
-I changed the routes up there to go to single product and changed it to have products/:productId here
-and in the thunk and in the router for single product.
-*/

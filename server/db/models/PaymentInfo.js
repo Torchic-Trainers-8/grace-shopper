@@ -15,6 +15,7 @@ const PaymentInfo = db.define('paymentinfo', {
       notEmpty: true
     }
   },
+  // o: remove fields not being used
   // phoneNumber: {
   //   type: DataTypes.VIRTUAL,
   //   get() {
