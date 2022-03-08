@@ -29,8 +29,9 @@ const Routes = () => {
           <Route path="/products/:id" component={SingleProduct} />
           <Route exact path="/Admin" component={Admin} />
           <Route path="/Admin/EditProduct" component={EditProduct} />
-          <Route path="/cart" component={Cart} />
-          <Redirect to="/home" />
+          <Route exact path="/cart" component={Cart} />
+          {/* <Redirect to="/home" /> */}
+          <Route path="*" component={Error404} />
         </Switch>
       ) : (
         <Switch>

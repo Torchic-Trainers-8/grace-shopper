@@ -1,7 +1,7 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { logout } from "../store";
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { logout } from '../store';
 
 const Navbar = () => {
   const isLoggedIn = useSelector((state) => !!state.auth.id);
@@ -16,7 +16,7 @@ const Navbar = () => {
             {/* The navbar will show these links after you log in */}
             <Link to="/home">Home</Link>
             <Link to="/products">Products</Link>
-            <Link to="/carts">Cart</Link>
+            <Link to="/cart">Cart</Link>
             <a href="#" onClick={() => dispatch(logout())}>
               Logout
             </a>

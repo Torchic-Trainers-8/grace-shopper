@@ -19,7 +19,24 @@ const Cart = () => {
   console.log('cart', cart);
   console.log('cart - products', cart.products);
 
-  return !order ? <div>Loading Order...</div> : <div>{order.id}</div>;
+  return !cart.products ? (
+    <div>Loading Order...</div>
+  ) : (
+    <div>
+      <div> Your Cart Items: </div>
+      <div>
+        {cart.products.map((cart) => (
+          <div key={cart.id}>
+            <div>{cart.id}</div>
+            <img style={{ width: 200, height: 200 }} src={cart.image} />
+            <div>{cart.title}</div>
+            <div>Quantity: {cart.cart.cartQty}</div>
+            {/* <div> order:{order}</div> */}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default Cart;
