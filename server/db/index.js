@@ -1,5 +1,3 @@
-//this is the access point for all things database related!
-
 const db = require('./db');
 const Product = require('./models/Product');
 const User = require('./models/User');
@@ -14,8 +12,8 @@ const PurchaseHistory = require('./models/PurchaseHistory');
 //associations could go here!
 
 // o: there are some issues with this cart setup
-// Product.belongsToMany(User, { through: Cart })
-// User.belongsToMany(Product, { through: Cart })
+// Product.belongsToMany(User, { through: Cart });
+// User.belongsToMany(Product, { through: Cart });
 
 User.hasMany(Order);
 Order.belongsTo(User);
