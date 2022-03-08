@@ -16,7 +16,8 @@ const Cart = () => {
   }, [id]);
 
   console.log('order', order);
-  console.log('cart', cart.products);
+  console.log('cart', cart);
+  console.log('cart - products', cart.products);
 
   return !order ? <div>Loading Order...</div> : <div>{order.id}</div>;
 };
