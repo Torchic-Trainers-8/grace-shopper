@@ -10,7 +10,6 @@ const { requireToken, isAdmin } = require('./gatekeepingMiddleware')
 router.get('/', requireToken, isAdmin, async (req, res, next) => {
   try {
     const carts = await Cart.findAll()
-    console.log(req)
     res.send(carts)
   } catch (error) {
     console.error('No carts found')
@@ -20,21 +19,19 @@ router.get('/', requireToken, isAdmin, async (req, res, next) => {
 //will need to update users once auth is finialized
 // /api/carts
 //Compare req.user.id to what? From owner table?
-router.post('/addToCart/:orderId/:productId', requireToken, async (req, res, next) => {
+router.put('/addToCart/:orderId/:productId', requireToken, async (req, res, next) => {
   try {
     //Do we need this? is user id accesible here.
     if (req.user.id === req.params.id) {
-      const orderId = req.params.orderId;
-      const productId = req.params.productId;
+      const orderId = req.params.orderId
+      const productId = req.params.productId
       const [cart, created] = await Cart.findOrCreate({
         where: { orderId, productId },
-    });
-    res
-      .status(200)
-      .send(await cart.update({ ...cart, cartQty: cart.cartQty + 1 }));
+      })
+      res.status(200).send(await cart.update({ ...cart, cartQty: cart.cartQty + 1 }))
     }
   } catch (error) {
-    console.error('Errored on add to cart');
+    console.error('Errored on add to cart')
   }
 })
 
@@ -42,8 +39,8 @@ router.post('/addToCart/:orderId/:productId', requireToken, async (req, res, nex
 router.put('/increaseCart/:orderId/:productId', requireToken, async (req, res, next) => {
   try {
     if (req.user.id === req.params.id) {
-      const orderId = req.params.orderId;
-      const productId = req.params.productId;
+      const orderId = req.params.orderId
+      const productId = req.params.productId
       const cart = await Cart.findOne({
         where: {
           orderId,
@@ -65,20 +62,20 @@ router.put('/increaseCart/:orderId/:productId', requireToken, async (req, res, n
 router.put('/decreaseCart/:orderId/:productId', requireToken, async (req, res, next) => {
   try {
     if (req.user.id === req.params.id) {
-      const orderId = req.params.orderId;
-      const productId = req.params.productId;
+      const orderId = req.params.orderId
+      const productId = req.params.productId
       const cart = await Cart.findOne({
         where: {
           orderId,
           productId,
         },
       })
-    const newCart = await cart.update({
-      orderId,
-      productId,
-      cartQty: cart.cartQty - 1,
-    })
-    res.status(200).send(newCart)
+      const newCart = await cart.update({
+        orderId,
+        productId,
+        cartQty: cart.cartQty - 1,
+      })
+      res.status(200).send(newCart)
     }
   } catch (error) {
     console.error('No product found')
@@ -87,18 +84,18 @@ router.put('/decreaseCart/:orderId/:productId', requireToken, async (req, res, n
 
 router.delete('/deleteCart/:orderId/:productId', requireToken, async (req, res, next) => {
   try {
-     if (req.user.id === req.params.id) {
-      const orderId = req.params.orderId;
-      const productId = req.params.productId;
+    if (req.user.id === req.params.id) {
+      const orderId = req.params.orderId
+      const productId = req.params.productId
       const cart = await Cart.findOne({
         where: {
           orderId,
           productId,
         },
-      });
-      const newCart = await cart.destroy();
-      res.status(204).send(`Deleted ${productId} from ${orderId}`);
-     }
+      })
+      const newCart = await cart.destroy()
+      res.status(204).send(`Deleted ${productId} from ${orderId}`)
+    }
   } catch (error) {
     console.error('No product found')
   }

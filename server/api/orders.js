@@ -1,8 +1,8 @@
-const router = require('express').Router();
-const Cart = require('../db/models/Cart');
-const Product = require('../db/models/Product');
-const User = require('../db/models/User');
-const Order = require('../db/models/Order');
+const router = require('express').Router()
+const Cart = require('../db/models/Cart')
+const Product = require('../db/models/Product')
+const User = require('../db/models/User')
+const Order = require('../db/models/Order')
 const { requireToken, isAdmin } = require('./gatekeepingMiddleware')
 
 //PRODUCTS GET ROUTER
@@ -10,27 +10,26 @@ const { requireToken, isAdmin } = require('./gatekeepingMiddleware')
 // /api/orders
 router.get('/', requireToken, isAdmin, async (req, res, next) => {
   try {
-    const orders = await Order.findAll();
-    res.send(orders);
+    const orders = await Order.findAll()
+    res.send(orders)
   } catch (error) {
-    console.error('No orders found');
+    console.error('No orders found')
   }
-});
-
+})
 
 //What compare req.user.id too. Compare with id from order?
 router.put('/purchase', requireToken, async (req, res, next) => {
   try {
-        const order = await Order.findOne({
-        where: {
-          isPurchased: false,
-        },
-      });
-      res.send(await order.update({ ...order, isPurchased: true }));
+    const order = await Order.findOne({
+      where: {
+        isPurchased: false,
+      },
+    })
+    res.send(await order.update({ ...order, isPurchased: true }))
   } catch (error) {
-    console.error('No orders found');
+    console.error('No orders found')
   }
-});
+})
 
 // /api/orders/:id
 router.get('/details/:id', requireToken, async (req, res, next) => {
@@ -54,21 +53,21 @@ router.get('/details/:id', requireToken, async (req, res, next) => {
   }
 })
 
-router.post('/findOrCreateOrder/:userId', requireToken, async (req, res, next) => {
+router.get('/findOrCreateOrder/:userId', requireToken, async (req, res, next) => {
   try {
     if (req.user.id === req.params.userid) {
-      const userId = req.params.userId;
+      const userId = req.params.userId
       const [order, created] = await Order.findOrCreate({
         where: {
           userId,
           isPurchased: false,
         },
-      });
-      res.status(201).json(order);
+      })
+      res.status(201).json(order)
     }
   } catch (error) {
-    console.error('No Order found');
+    console.error('No Order found')
   }
-});
+})
 
-module.exports = router;
+module.exports = router
