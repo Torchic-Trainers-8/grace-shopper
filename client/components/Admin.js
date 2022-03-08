@@ -20,7 +20,6 @@ function Admin(props) {
       try {
         const response = await axios.delete(`/api/products/${props.match.params.id}`)
         const data = response.data
-        console.log('this is delete prod thunk')
         dispatch(deleteProduct(data))
         history.push(`/api/products`)
       } catch (error) {
