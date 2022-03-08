@@ -30,7 +30,6 @@ const Routes = () => {
           <Route path="/products/:id" component={SingleProduct} />
           <Route exact path="/Admin" component={Admin} />
           <Route path="/Admin/EditProduct" component={EditProduct} />
-          <Route path="/cart" component={Cart} />
           <Route path="/carts" component={Carts} />
           <Redirect to="/home" />
         </Switch>
@@ -41,7 +40,7 @@ const Routes = () => {
           </Route>
           <Route path="/login">{Login}</Route>
           <Route path="/signup">{Signup}</Route>
-          <Route path="/Cart" component={Cart} />
+          {/* <Route path="/Cart" component={Cart} /> */}
           <Route exact path="/products" component={Products} />
           <Route path="/products/:id" component={SingleProduct} />
           <Route path="/cart" component={Cart} />

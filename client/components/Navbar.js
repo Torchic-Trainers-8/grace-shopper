@@ -16,7 +16,7 @@ const Navbar = () => {
             {/* The navbar will show these links after you log in */}
             <Link to="/home">Home</Link>
             <Link to="/products">Products</Link>
-            <Link to="/cart">Cart</Link>
+            <Link to="/carts">Cart</Link>
             <a href="#" onClick={() => dispatch(logout())}>
               Logout
             </a>
@@ -27,7 +27,7 @@ const Navbar = () => {
             <Link to="/login">Login</Link>
             <Link to="/signup">Sign Up</Link>
             <Link to="/products">Products</Link>
-            <Link to="/cart">Cart</Link>
+            <Link to="/carts">Cart</Link>
           </div>
         )}
       </nav>

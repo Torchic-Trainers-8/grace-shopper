@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProduct } from "../store";
 import { Link, useParams } from "react-router-dom";
-import Cart from "./Cart";
+import Carts from "./Carts";
 
 const SingleProduct = (props) => {
   // o: you are going to want to use useParams from react-router-dom to get
@@ -25,7 +25,7 @@ const SingleProduct = (props) => {
       <div>Price: {price}</div>
       <div>Quantity: {quantity}</div>
       <div>Description: {description}</div>
-      <Link to="/cart">Add to Cart</Link>
+      <Link to="/carts">Add to Cart</Link>
     </div>
   );
 };
