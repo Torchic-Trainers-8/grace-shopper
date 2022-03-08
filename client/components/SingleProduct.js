@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchProduct } from "../store";
-import { Link, useParams } from "react-router-dom";
-import Carts from "./Carts";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCartThunk, fetchProduct } from '../store';
+import { Link, useParams } from 'react-router-dom';
 
 const SingleProduct = (props) => {
   // o: you are going to want to use useParams from react-router-dom to get
@@ -10,9 +9,11 @@ const SingleProduct = (props) => {
   const dispatch = useDispatch();
   const product = useSelector((state) => state.product);
   const { title, image, price, quantity, description, id } = product;
+  const isLoggedIn = useSelector((state) => !!state.auth.id);
 
   useEffect(() => {
     dispatch(fetchProduct(props.match.params.id));
+    dispatch(addToCartThunk());
   }, []);
 
   return !product ? (
@@ -25,7 +26,7 @@ const SingleProduct = (props) => {
       <div>Price: {price}</div>
       <div>Quantity: {quantity}</div>
       <div>Description: {description}</div>
-      <Link to="/carts">Add to Cart</Link>
+      <Link to="/cart">Add to Cart</Link>
     </div>
   );
 };

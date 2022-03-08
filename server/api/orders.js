@@ -67,7 +67,7 @@ router.get('/details/:id', async (req, res, next) => {
   }
 });
 
-router.post('/findOrCreateOrder/:userId', async (req, res, next) => {
+router.get('/findOrCreateOrder/:userId', async (req, res, next) => {
   try {
     const userId = req.params.userId;
     const [order, created] = await Order.findOrCreate({
