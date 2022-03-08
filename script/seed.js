@@ -1,63 +1,59 @@
-'use strict';
+'use strict'
 
 const {
   db,
-  models: {
-    Product,
-    Tag,
-    User,
-    PaymentInfo,
-    Wishlist,
-    Address,
-    PurchaseHistory,
-    Cart,
-  },
-} = require('../server/db/index');
-const fs = require('fs');
-const fastcsv = require('fast-csv');
-const { Client } = require('pg');
+  models: { Product, Tag, User, PaymentInfo, Wishlist, Address, PurchaseHistory, Cart },
+} = require('../server/db/index')
+const fs = require('fs')
+const fastcsv = require('fast-csv')
+const { Client } = require('pg')
 
-let client;
-let stream = fs.createReadStream('data/Yarn-Seed-File.csv');
-let csvData = [];
+let client
+let stream = fs.createReadStream('data/Yarn-Seed-File.csv')
+let csvData = []
 let csvStream = fastcsv
   .parse()
   .on('data', function (data) {
-    csvData.push(data);
+    csvData.push(data)
   })
   .on('end', async function () {
-    csvData.shift();
+    csvData.shift()
     if (process.env.DATABASE_URL) {
       client = new Client({
         connectionString: process.env.DATABASE_URL,
         ssl: {
-          rejectUnauthorized: false
-        }
-      });
+          rejectUnauthorized: false,
+        },
+      })
     } else {
       client = new Client({
-        connectionString: 'postgres://localhost:5432/grace-shopper'
-      });
+        connectionString: 'postgres://localhost:5432/grace-shopper',
+      })
     }
     const query =
-    'INSERT INTO PRODUCTS (title, description, image, price, quantity, weight, color) VALUES ($1, $2, $3, $4, $5, $6, $7)';
-    client.connect();
-    const queries = [];
+      'INSERT INTO PRODUCTS (title, description, image, price, quantity, weight, color) VALUES ($1, $2, $3, $4, $5, $6, $7)'
+    client.connect()
+    const queries = []
     csvData.forEach((row) => {
-       queries.push(client.query(query, row))
+      queries.push(client.query(query, row))
+    })
+    await Promise.all(queries)
+      .then(() => {
 
-    });
-    await Promise.all(queries).then(() => client.end())
-  });
+        client.end()
+      })
+      .catch(error => console.log(error))
+      console.log(`seeded ${queries.length} products...`)
+  })
 
 /**
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.
  */
 async function seed() {
-  await db.sync({ force: true });
-  console.log('db synced!');
-  stream.pipe(csvStream);
+  await db.sync({ force: true })
+  console.log('db synced!')
+  stream.pipe(csvStream)
 
   // Creating Users
   // const users = await Promise.all([
@@ -73,27 +69,26 @@ async function seed() {
   //   }),
   // ])
 
-
-  const users = [];
+  const users = []
   users.push({
     username: 'user1@gmail.com',
     password: '123',
     role: 'Admin',
-  });
+  })
 
   function userList() {
-    for (let i = 2; i < 80; i++) {
+    for (let i = 2; i <= 80; i++) {
       users.push({
         username: `user${i}@gmail.com`,
         password: '123',
         role: 'Customer',
-      });
+      })
     }
   }
-  userList();
-  User.bulkCreate(users);
+  userList()
+  User.bulkCreate(users)
 
-  console.log(`seeded ${users.length} users successfully`);
+  console.log(`seeded ${users.length} users successfully`)
 }
 
 /*
@@ -102,16 +97,16 @@ async function seed() {
  The `seed` function is concerned only with modifying the database.
 */
 async function runSeed() {
-  console.log('seeding...');
+  console.log('seeding...')
   try {
-    await seed();
+    await seed()
   } catch (err) {
-    console.error(err);
-    process.exitCode = 1;
+    console.error(err)
+    process.exitCode = 1
   } finally {
-    console.log('closing db connection');
-    await db.close();
-    console.log('db connection closed');
+    console.log('closing db connection')
+    // await db.close()
+    console.log('db connection closed')
   }
 }
 
@@ -121,8 +116,8 @@ async function runSeed() {
   any errors that might occur inside of `seed`.
 */
 if (module === require.main) {
-  runSeed();
+  runSeed()
 }
 
 // we export the seed function for testing purposes (see `./seed.spec.js`)
-module.exports = seed;
+module.exports = seed

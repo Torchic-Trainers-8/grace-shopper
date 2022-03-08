@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
 import { fetchUsers, fetchProducts, fetchUser, fetchOrder } from '../store';
 import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route, Link } from 'react-router-dom';
@@ -41,6 +40,8 @@ const Home = () => {
       {/* "refresh" without refreshing */}
       <Link to="/home">Clear</Link>
       <Link to="/home/cart">Cart</Link>
+
+      {/* Begin Switches*/}
       <Switch>
         <Switch>
           {/*Product Table*/}

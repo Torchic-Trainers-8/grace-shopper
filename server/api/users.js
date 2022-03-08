@@ -3,29 +3,9 @@ const {
   models: { User, Product },
 } = require('../db')
 module.exports = router
+const { requireToken, isAdmin} = require('./gatekeepingMiddleware')
 
-// o: write a middleware
-// function isAdmin() {
-//   if(req.user.isAdmin) {
-//     next()
-//   } else {
-//     next(new Error("You cannot access this"))
-//   }
-// }
-
-//make a middleware for admin auth // req.user.role not found.
-// const ensureAdmin = function (req, res, next) {
-//   if (req.user.role === 'Admin') {
-//     return next()
-//   } else {
-//     return res.redirect('/')
-//   }
-// }
-
-// api/users/
-// o: only admins should be able to do this
-// j: implemented incorrectly??? req.user.role not found
-router.get('/', async (req, res, next) => {
+router.get('/', requireToken, isAdmin, async (req, res, next) => {
   try {
     const users = await User.findAll({
       attributes: ['id', 'username', 'role'],
@@ -40,16 +20,20 @@ router.get('/', async (req, res, next) => {
 })
 
 // api/users/id (preferences and junk)
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', requireToken, async (req, res, next) => {
   try {
-    const user = await User.findOne({
-      where: { id: req.params.id },
-      include: Product,
-    })
+    if(req.user.id === req.params.id) {
+      const user = await User.findOne({
+        where: { id: req.params.id },
+        include: Product,
+      })
+      res.json(user)
+    } else {
+      res.status(403).send('This is not you!')
+    }
     if (!user) {
       res.status(404).send('Cannot find User')
     }
-    res.json(user)
   } catch (error) {
     next(error)
   }
@@ -72,16 +56,18 @@ router.post('/create', async (req, res, next) => {
 // j: ??? not sure what the comment from omar means. Need to get with Hannah.
 // H: I think he is saying that user should be on state and we don't need to find it because we should already have it. Can we look at what the objects look like together? The route should just be '/cart'
 
-router.get('/:id/cart', async (req, res, next) => {
+router.get('/:id/cart', requireToken, async (req, res, next) => {
   try {
     // o: make sure to check for the case when resource is not found
-    const user = await User.findOne({
-      where: {
-        userId: req.user.id,
-      },
-    })
-    const userCart = await user.getProducts()
-    res.json(userCart)
+    if(req.user.id === req.params.id) {
+      const user = await User.findOne({
+        where: {
+          userId: req.user.id,
+        },
+      })
+      const userCart = await user.getProducts()
+      res.json(userCart)
+    }
   } catch (err) {
     next(err)
   }

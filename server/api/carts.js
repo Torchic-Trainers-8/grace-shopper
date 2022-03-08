@@ -1,97 +1,108 @@
-const router = require('express').Router();
-const Cart = require('../db/models/Cart');
-const Product = require('../db/models/Product');
-const User = require('../db/models/User');
+const router = require('express').Router()
+const Cart = require('../db/models/Cart')
+const Product = require('../db/models/Product')
+const User = require('../db/models/User')
+const { requireToken, isAdmin } = require('./gatekeepingMiddleware')
 
 //PRODUCTS GET ROUTER
 
 // /api/carts
-router.get('/', async (req, res, next) => {
+router.get('/', requireToken, isAdmin, async (req, res, next) => {
   try {
-    const carts = await Cart.findAll();
-    console.log(req);
-    res.send(carts);
+    const carts = await Cart.findAll()
+    console.log(req)
+    res.send(carts)
   } catch (error) {
-    console.error('No carts found');
+    console.error('No carts found')
   }
-});
+})
 
 //will need to update users once auth is finialized
 // /api/carts
-router.post('/addToCart/:orderId/:productId', async (req, res, next) => {
+//Compare req.user.id to what? From owner table?
+router.post('/addToCart/:orderId/:productId', requireToken, async (req, res, next) => {
   try {
-    const orderId = req.params.orderId;
-    const productId = req.params.productId;
-    const [cart, created] = await Cart.findOrCreate({
-      where: { orderId, productId },
+    //Do we need this? is user id accesible here.
+    if (req.user.id === req.params.id) {
+      const orderId = req.params.orderId;
+      const productId = req.params.productId;
+      const [cart, created] = await Cart.findOrCreate({
+        where: { orderId, productId },
     });
     res
       .status(200)
       .send(await cart.update({ ...cart, cartQty: cart.cartQty + 1 }));
+    }
   } catch (error) {
     console.error('Errored on add to cart');
   }
-});
+})
 
 //in redux determine if it exists, if it does direct to put, if it doesn't direct to create
-router.put('/increaseCart/:orderId/:productId', async (req, res, next) => {
+router.put('/increaseCart/:orderId/:productId', requireToken, async (req, res, next) => {
   try {
-    const orderId = req.params.orderId;
-    const productId = req.params.productId;
-    const cart = await Cart.findOne({
-      where: {
+    if (req.user.id === req.params.id) {
+      const orderId = req.params.orderId;
+      const productId = req.params.productId;
+      const cart = await Cart.findOne({
+        where: {
+          orderId,
+          productId,
+        },
+      })
+      const newCart = await cart.update({
         orderId,
         productId,
-      },
-    });
-    const newCart = await cart.update({
-      orderId,
-      productId,
-      cartQty: cart.cartQty + 1,
-    });
-    res.status(200).send(newCart);
+        cartQty: cart.cartQty + 1,
+      })
+      res.status(200).send(newCart)
+    }
   } catch (error) {
-    console.error('No product found');
+    console.error('No product found')
   }
-});
+})
 
-router.put('/decreaseCart/:orderId/:productId', async (req, res, next) => {
+router.put('/decreaseCart/:orderId/:productId', requireToken, async (req, res, next) => {
   try {
-    const orderId = req.params.orderId;
-    const productId = req.params.productId;
-    const cart = await Cart.findOne({
-      where: {
-        orderId,
-        productId,
-      },
-    });
+    if (req.user.id === req.params.id) {
+      const orderId = req.params.orderId;
+      const productId = req.params.productId;
+      const cart = await Cart.findOne({
+        where: {
+          orderId,
+          productId,
+        },
+      })
     const newCart = await cart.update({
       orderId,
       productId,
       cartQty: cart.cartQty - 1,
-    });
-    res.status(200).send(newCart);
+    })
+    res.status(200).send(newCart)
+    }
   } catch (error) {
-    console.error('No product found');
+    console.error('No product found')
   }
-});
+})
 
-router.delete('/deleteCart/:orderId/:productId', async (req, res, next) => {
+router.delete('/deleteCart/:orderId/:productId', requireToken, async (req, res, next) => {
   try {
-    const orderId = req.params.orderId;
-    const productId = req.params.productId;
-    const cart = await Cart.findOne({
-      where: {
-        orderId,
-        productId,
-      },
-    });
-    const newCart = await cart.destroy();
-    res.status(204).send(`Deleted ${productId} from ${orderId}`);
+     if (req.user.id === req.params.id) {
+      const orderId = req.params.orderId;
+      const productId = req.params.productId;
+      const cart = await Cart.findOne({
+        where: {
+          orderId,
+          productId,
+        },
+      });
+      const newCart = await cart.destroy();
+      res.status(204).send(`Deleted ${productId} from ${orderId}`);
+     }
   } catch (error) {
-    console.error('No product found');
+    console.error('No product found')
   }
-});
+})
 
 // /api/carts/:userId
 // grabs all carts, do a filter after the fact
@@ -103,24 +114,21 @@ router.delete('/deleteCart/:orderId/:productId', async (req, res, next) => {
 
 // place total qty in "Go to Cart(#)" link in nav
 // total qty calculation in cart view
-router.get('/:id', async (req, res, next) => {
+// o: you don't need to pass the userId in since you already have req.user
+
+//might not use.
+router.get('/:id', requireToken, async (req, res, next) => {
   try {
-    const userId = req.params.id;
-    const cart = await Cart.findAll({
-      where: { userId },
-    });
-    res.send(cart);
+    if (req.user.id === req.params.id) {
+      const userId = req.params.id
+      const cart = await Cart.findAll({
+        where: { userId },
+      })
+      res.send(cart)
+    }
   } catch (error) {
-    console.error('No user cart found');
+    console.error('No user cart found')
   }
-});
+})
 
-// router.post('/', async (req, res,next) => {
-//   try {
-//     const
-//   } catch (error) {
-
-//   }
-// })
-
-module.exports = router;
+module.exports = router
