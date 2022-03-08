@@ -10,7 +10,6 @@ const { requireToken, isAdmin } = require('./gatekeepingMiddleware')
 router.get('/', requireToken, isAdmin, async (req, res, next) => {
   try {
     const carts = await Cart.findAll()
-    console.log(req)
     res.send(carts)
   } catch (error) {
     console.error('No carts found')

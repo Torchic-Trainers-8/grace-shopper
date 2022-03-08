@@ -12,7 +12,11 @@ export const fetchOrder = (userId) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(
-        `/api/orders/findOrCreateOrder/${userId}`
+        `/api/orders/findOrCreateOrder/${userId}`, {
+          headers: {
+            authorization: window.localStorage.token
+          }
+        }
       );
       const data = response.data;
       dispatch(getOrder(data));

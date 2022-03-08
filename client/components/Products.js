@@ -12,7 +12,6 @@ const Products = () => {
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
-  console.log("products", products);
   return !products ? (
     <div>Loading Products...</div>
   ) : (
