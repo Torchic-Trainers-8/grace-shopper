@@ -43,24 +43,6 @@ router.get('/details/:id', async (req, res, next) => {
         },
       },
     });
-
-    // userOrderDetails = {
-    //   ...userOrderDetails,
-    //   orders: userOrderDetails.orders[0],
-    // };
-    // userOrderDetails.id = 5000;
-    // if (userOrderDetails.id === userId) {
-    //   console.log('Im here');
-    //   userOrderDetails.orders = userOrderDetails.orders[0];
-    // }
-    // res.json(
-    //   await userOrderDetails.update({
-    //     ...userOrderDetails,
-    //     id: 5000,
-    //     orders: userOrderDetails.orders[0],
-    //   })
-    // );
-
     res.json(userOrderDetails);
   } catch (error) {
     console.error('No order details found');

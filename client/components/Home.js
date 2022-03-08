@@ -1,24 +1,26 @@
-import React, { useEffect } from "react";
-import axios from "axios";
-import { fetchUsers, fetchProducts, fetchUser } from "../store";
-import { useSelector, useDispatch } from "react-redux";
-import { Switch, Route, Link } from "react-router-dom";
-import AdminProducts from "./AdminProducts";
-import AdminUsers from "./AdminUsers";
-import AdminUser from "./AdminUser";
-import Cart from "./Cart";
+import React, { useEffect } from 'react';
+import axios from 'axios';
+import { fetchUsers, fetchProducts, fetchUser, fetchOrder } from '../store';
+import { useSelector, useDispatch } from 'react-redux';
+import { Switch, Route, Link } from 'react-router-dom';
+import AdminProducts from './AdminProducts';
+import AdminUsers from './AdminUsers';
+import AdminUser from './AdminUser';
+import Cart from './Cart';
 
 const Home = () => {
   const dispatch = useDispatch();
   const { id, username, role } = useSelector((state) => state.auth);
   //isAdmin uses auth.role
-  const isAdmin = role === "Admin";
+  const isAdmin = role === 'Admin';
 
   const products = useSelector((state) => state.products);
   const users = useSelector((state) => state.users);
+  const order = useSelector((state) => state.order);
 
   useEffect(() => {
     // isAdmin is a gatekeeper for fetching state
+    dispatch(fetchOrder(id));
     if (isAdmin) {
       dispatch(fetchUsers());
       dispatch(fetchProducts());
@@ -28,7 +30,6 @@ const Home = () => {
   // users list, click to bring up list (table?) component- delete button
 
   // products list, click to bring up list (table?) component - add button at top - edit, delete buttons on each product. Gets replaced by a form for edit or add
-  console.log("state", username);
   return isAdmin ? (
     <>
       <h2>Hello Admin {username}</h2>
