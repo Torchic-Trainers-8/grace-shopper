@@ -1,19 +1,20 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchProduct } from '../store'
-import { Link, useParams } from 'react-router-dom'
-import Cart from './Cart'
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCartThunk, fetchProduct } from '../store';
+import { Link, useParams } from 'react-router-dom';
 
 const SingleProduct = (props) => {
   // o: you are going to want to use useParams from react-router-dom to get
   //  id so you can load a single product
-  const dispatch = useDispatch()
-  const product = useSelector((state) => state.product)
-  const { title, image, price, quantity, description, id } = product
+  const dispatch = useDispatch();
+  const product = useSelector((state) => state.product);
+  const { title, image, price, quantity, description, id } = product;
+  const isLoggedIn = useSelector((state) => !!state.auth.id);
 
   useEffect(() => {
-    dispatch(fetchProduct(props.match.params.id))
-  }, [])
+    dispatch(fetchProduct(props.match.params.id));
+    dispatch(addToCartThunk());
+  }, []);
 
   return !product ? (
     <div>Loading Single Product Yarn...</div>
@@ -27,7 +28,7 @@ const SingleProduct = (props) => {
       <div>Description: {description}</div>
       <Link to="/cart">Add to Cart</Link>
     </div>
-  )
-}
+  );
+};
 
-export default SingleProduct
+export default SingleProduct;
