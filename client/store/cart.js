@@ -1,6 +1,6 @@
-import axios from 'axios'
+import axios from "axios";
 
-const ADD_TO_CART = 'ADD_TO_CART'
+const ADD_TO_CART = "ADD_TO_CART";
 
 const GET_CART = "GET_CART";
 
@@ -8,8 +8,8 @@ export const addToCart = (product) => {
   return {
     type: ADD_TO_CART,
     product,
-  }
-}
+  };
+};
 
 export const getCart = (cart) => {
   return {
@@ -21,35 +21,26 @@ export const getCart = (cart) => {
 export const addToCartThunk = (id) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`/api/products/${id}`)
-      dispatch(addToCartThunk(data))
+      const { data } = await axios.get(`/api/${id}`);
+      dispatch(addToCartThunk(data));
     } catch (error) {
-      console.error('Problem adding to cart')
+      console.error("Problem adding to cart");
     }
-  }
-}
+  };
+};
 
-const initialState = []
+const initialState = [];
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case GET_CART: {
+      return action.cart;
+    }
     case ADD_TO_CART: {
-      const product = action.payload
-      const existItem = state.cartItems.find((item) => item.id === product.id)
-      if (existItem) {
-        return {
-          ...state,
-          cart: state.cart.map((item) => item.id === existItem.id),
-        }
-      } else {
-        return {
-          ...state,
-          cart: [...state.cart, product],
-        }
-      }
+      return [...state, product];
     }
     default:
-      return state
+      return state;
   }
 }
 

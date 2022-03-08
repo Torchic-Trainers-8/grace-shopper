@@ -1,9 +1,22 @@
 import React, { useEffect } from "react";
-import axios from "axios";
+import { fetchUser } from "../store";
 import { useSelector, useDispatch } from "react-redux";
+import Cart from "./Cart";
 
-const User = () => {
-  return <div>Hi I'm a User</div>;
+const User = (props) => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(fetchUser(props.match.params.id));
+  }, []);
+  console.log("USER", user);
+  return (
+    <div className="user">
+      <div>Username: {username}</div>
+      <Cart cart={Cart} />
+    </div>
+  );
 };
 
 export default User;

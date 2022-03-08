@@ -2,6 +2,7 @@ body {
   font-family: sans-serif;
   /* background: url("https://envato-shoebox-0.imgix.net/112e/14e0-1b06-4bbf-95a0-0abe9825262d/DSC01916.jpg?auto=compress%2Cformat&fit=max&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&markalign=center%2Cmiddle&markalpha=18&w=700&s=c2d4547bf6bc0659b34ef6796c3864d5"); */
   background-color: rgb(230, 230, 217);
+  flex-wrap: wrap;
 }
 
 a {
@@ -22,5 +23,15 @@ form div {
   display: inline-block;
 }
 a:hover {
-  color: purple;
+  color: rgb(31, 24, 31);
 }
+.products {
+  display: flex;
+  flex-wrap: wrap;
+}
+/* .cart {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: rgba(146, 146, 146, 0.95);
+} */
