@@ -1,15 +1,15 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { logout } from '../store'
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { logout } from '../store';
 
 const Navbar = () => {
-  const isLoggedIn = useSelector((state) => !!state.auth.id)
-  const dispatch = useDispatch()
+  const isLoggedIn = useSelector((state) => !!state.auth.id);
+  const dispatch = useDispatch();
 
   return (
     <div>
-      <h1>FS-App-Template</h1>
+      <h1>Best Yarn</h1>
       <nav>
         {isLoggedIn ? (
           <div>
@@ -27,13 +27,13 @@ const Navbar = () => {
             <Link to="/login">Login</Link>
             <Link to="/signup">Sign Up</Link>
             <Link to="/products">Products</Link>
-            <Link to="/cart">Cart</Link>
+            <Link to="/carts">Cart</Link>
           </div>
         )}
       </nav>
       <hr />
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
