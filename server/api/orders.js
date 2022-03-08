@@ -21,14 +21,12 @@ router.get('/', requireToken, isAdmin, async (req, res, next) => {
 //What compare req.user.id too. Compare with id from order?
 router.put('/purchase', requireToken, async (req, res, next) => {
   try {
-    if (req.user.id === req.params.id) {
-      const order = await Order.findOne({
+        const order = await Order.findOne({
         where: {
           isPurchased: false,
         },
       });
       res.send(await order.update({ ...order, isPurchased: true }));
-    }
   } catch (error) {
     console.error('No orders found');
   }
@@ -48,27 +46,9 @@ router.get('/details/:id', requireToken, async (req, res, next) => {
             model: Product,
           },
         },
-      });
-      res.json(userOrderDetails);
-    }
-
-
-    // userOrderDetails = {
-    //   ...userOrderDetails,
-    //   orders: userOrderDetails.orders[0],
-    // };
-    // userOrderDetails.id = 5000;
-    // if (userOrderDetails.id === userId) {
-    //   console.log('Im here');
-    //   userOrderDetails.orders = userOrderDetails.orders[0];
-    // }
-    // res.json(
-    //   await userOrderDetails.update({
-    //     ...userOrderDetails,
-    //     id: 5000,
-    //     orders: userOrderDetails.orders[0],
-    //   })
-    // );
+      },
+    });
+    res.json(userOrderDetails);
   } catch (error) {
     console.error('No order details found');
   }
@@ -76,7 +56,7 @@ router.get('/details/:id', requireToken, async (req, res, next) => {
 
 router.post('/findOrCreateOrder/:userId', requireToken, async (req, res, next) => {
   try {
-    if (req.user.id === req.params.id) {
+    if (req.user.id === req.params.userid) {
       const userId = req.params.userId;
       const [order, created] = await Order.findOrCreate({
         where: {

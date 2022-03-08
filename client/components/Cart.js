@@ -15,9 +15,9 @@ const Cart = () => {
     dispatch(fetchCart(id));
   }, [id]);
 
-  console.log('order', order);
-  console.log('cart', cart);
-  console.log('cart - products', cart.products);
+  // console.log('order', order);
+  // console.log('cart', cart);
+  // console.log('cart - products', cart.products);
 
   return !cart.products ? (
     <div>Loading Order...</div>
