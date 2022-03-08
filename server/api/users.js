@@ -5,29 +5,7 @@ const {
 module.exports = router
 const { requireToken, isAdmin} = require('./gatekeepingMiddleware')
 
-// o: write a middleware
-// function isAdmin() {
-//   if(req.user.isAdmin) {
-//     next()
-//   } else {
-//     next(new Error("You cannot access this"))
-//   }
-// }
-
-//make a middleware for admin auth // req.user.role not found.
-// const ensureAdmin = function (req, res, next) {
-//   if (req.user.role === 'Admin') {
-//     return next()
-//   } else {
-//     return res.redirect('/')
-//   }
-// }
-
-// api/users/
-// o: only admins should be able to do this
-// j: implemented incorrectly??? req.user.role not found
 router.get('/', requireToken, isAdmin, async (req, res, next) => {
-  console.log("We are in the get route")
   try {
     const users = await User.findAll({
       attributes: ['id', 'username', 'role'],

@@ -34,7 +34,11 @@ export const deleteProduct = (id) => {
 export const fetchProducts = () => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get('/api/products')
+      const { data } = await axios.get('/api/products', {
+        headers: {
+          authorization: window.localStorage.token
+        }
+      })
       dispatch(getProducts(data))
     } catch (error) {
       console.log(error)

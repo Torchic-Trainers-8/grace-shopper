@@ -30,6 +30,7 @@ const Routes = () => {
           <Route path="/Admin/EditProduct" component={EditProduct} />
           <Route path="/Cart" component={Cart} />
           <Redirect to="/home" />
+          <Route path="*" component={Error404} />
         </Switch>
       ) : (
         <Switch>

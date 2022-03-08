@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import axios from 'axios'
 import { fetchUsers, fetchProducts, fetchUser } from '../store'
 import { useSelector, useDispatch } from 'react-redux'
 import { Switch, Route, Link } from 'react-router-dom'
