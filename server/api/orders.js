@@ -33,8 +33,9 @@ router.put('/purchase', requireToken, async (req, res, next) => {
 
 // /api/orders/:id
 router.get('/details/:id', requireToken, async (req, res, next) => {
+  console.log('I made it to order details');
   try {
-    const userId = req.params.id;
+    const userId = req.user.id;
     let userOrderDetails = await User.findOne({
       where: { id: userId },
       include: {
