@@ -30,8 +30,8 @@ const Routes = () => {
           <Route exact path="/Admin" component={Admin} />
           <Route path="/Admin/EditProduct" component={EditProduct} />
           <Route exact path="/cart" component={Cart} />
-          {/* <Redirect to="/home" /> */}
-          <Route path="*" component={Error404} />
+          <Redirect to="/home" />
+          {/* <Route path="*" component={Error404} /> */}
         </Switch>
       ) : (
         <Switch>
