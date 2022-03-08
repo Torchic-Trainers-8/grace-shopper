@@ -36,7 +36,7 @@ router.put('/purchase', requireToken, async (req, res, next) => {
 router.get('/details/:id', requireToken, async (req, res, next) => {
   try {
     if (req.user.id === req.params.id) {
-      const userId = req.params.id;
+      const userId = req.params.id
       let userOrderDetails = await User.findOne({
         where: { id: userId },
         include: {
@@ -46,13 +46,13 @@ router.get('/details/:id', requireToken, async (req, res, next) => {
             model: Product,
           },
         },
-      },
-    });
-    res.json(userOrderDetails);
+      })
+      res.json(userOrderDetails)
+    }
   } catch (error) {
-    console.error('No order details found');
+    console.error('No order details found')
   }
-});
+})
 
 router.post('/findOrCreateOrder/:userId', requireToken, async (req, res, next) => {
   try {
