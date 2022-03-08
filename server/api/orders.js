@@ -53,7 +53,7 @@ router.get('/details/:id', requireToken, async (req, res, next) => {
   }
 })
 
-router.post('/findOrCreateOrder/:userId', requireToken, async (req, res, next) => {
+router.get('/findOrCreateOrder/:userId', requireToken, async (req, res, next) => {
   try {
     if (req.user.id === req.params.userid) {
       const userId = req.params.userId
