@@ -16,43 +16,37 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+//will need to update users once auth is finialized
 // /api/carts
-// o: you don't need to pass the userId in since you already have req.user
-router.post('/addToCart/:userId/:productId', async (req, res, next) => {
+router.post('/addToCart/:orderId/:productId', async (req, res, next) => {
   try {
-    const userId = req.params.userId
-    const productId = req.params.productId
-
-    // o: what if the cart already exists? try (findOrCreate)
-    //  https://sequelize.org/master/manual/model-querying-finders.html
-    const newCart = await Cart.create({
-      userId,
-      productId,
-      cartQty: 1,
-    })
-    res.status(201).send(newCart)
+    const orderId = req.params.orderId;
+    const productId = req.params.productId;
+    const [cart, created] = await Cart.findOrCreate({
+      where: { orderId, productId },
+    });
+    res
+      .status(200)
+      .send(await cart.update({ ...cart, cartQty: cart.cartQty + 1 }));
   } catch (error) {
-    console.error('No product found')
+    console.error('Errored on add to cart');
   }
 })
 
 //in redux determine if it exists, if it does direct to put, if it doesn't direct to create
-// o: you don't need to pass the userId in since you already have req.user
-router.put('/increaseCart/:userId/:productId', async (req, res, next) => {
+router.put('/increaseCart/:orderId/:productId', async (req, res, next) => {
   try {
-    const userId = req.params.userId
-    const productId = req.params.productId
-
-    // o: check for when resource not found
+    const orderId = req.params.orderId;
+    const productId = req.params.productId;
     const cart = await Cart.findOne({
       where: {
-        userId,
+        orderId,
         productId,
       },
     })
 
     const newCart = await cart.update({
-      userId,
+      orderId,
       productId,
       cartQty: cart.cartQty + 1,
     })
@@ -62,19 +56,18 @@ router.put('/increaseCart/:userId/:productId', async (req, res, next) => {
   }
 })
 
-// o: you don't need to pass the userId in since you already have req.user
-router.put('/decreaseCart/:userId/:productId', async (req, res, next) => {
+router.put('/decreaseCart/:orderId/:productId', async (req, res, next) => {
   try {
-    const userId = req.params.userId
-    const productId = req.params.productId
+    const orderId = req.params.orderId;
+    const productId = req.params.productId;
     const cart = await Cart.findOne({
       where: {
-        userId,
+        orderId,
         productId,
       },
     })
     const newCart = await cart.update({
-      userId,
+      orderId,
       productId,
       cartQty: cart.cartQty - 1,
     })
@@ -84,19 +77,18 @@ router.put('/decreaseCart/:userId/:productId', async (req, res, next) => {
   }
 })
 
-// o: you don't need to pass the userId in since you already have req.user
-router.delete('/deleteCart/:userId/:productId', async (req, res, next) => {
+router.delete('/deleteCart/:orderId/:productId', async (req, res, next) => {
   try {
-    const userId = req.params.userId
-    const productId = req.params.productId
+    const orderId = req.params.orderId;
+    const productId = req.params.productId;
     const cart = await Cart.findOne({
       where: {
-        userId,
+        orderId,
         productId,
       },
-    })
-    const newCart = await cart.destroy()
-    res.status(204).send(`Deleted ${productId} from ${userId}`)
+    });
+    const newCart = await cart.destroy();
+    res.status(204).send(`Deleted ${productId} from ${orderId}`);
   } catch (error) {
     console.error('No product found')
   }

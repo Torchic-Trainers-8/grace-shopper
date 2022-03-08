@@ -16,30 +16,70 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// /api/orders/:id
-router.get('/:id', async (req, res, next) => {
+router.put('/purchase', async (req, res, next) => {
   try {
-    const userId = req.params.id;
-
-    const cart = await Cart.findAll({
-      where: { userId },
+    const order = await Order.findOne({
+      where: {
+        isPurchased: false,
+      },
     });
-    res.send(cart);
+    res.send(await order.update({ ...order, isPurchased: true }));
   } catch (error) {
-    console.error('No user cart found');
+    console.error('No orders found');
   }
 });
 
-// o: should you be searching for cart by cartId or by userId?
-router.get("/:id/products", async (req, res, next) => {
+// /api/orders/:id
+router.get('/details/:id', async (req, res, next) => {
   try {
-    // o: check for when cart is not found
-    const cart = await Cart.findOne({
-      where: { id: req.params.id },
+    const userId = req.params.id;
+    let userOrderDetails = await User.findOne({
+      where: { id: userId },
+      include: {
+        model: Order,
+        where: { isPurchased: false },
+        include: {
+          model: Product,
+        },
+      },
     });
-    res.send(cart.getProducts());
+
+    // userOrderDetails = {
+    //   ...userOrderDetails,
+    //   orders: userOrderDetails.orders[0],
+    // };
+    // userOrderDetails.id = 5000;
+    // if (userOrderDetails.id === userId) {
+    //   console.log('Im here');
+    //   userOrderDetails.orders = userOrderDetails.orders[0];
+    // }
+    // res.json(
+    //   await userOrderDetails.update({
+    //     ...userOrderDetails,
+    //     id: 5000,
+    //     orders: userOrderDetails.orders[0],
+    //   })
+    // );
+
+    res.json(userOrderDetails);
   } catch (error) {
-    console.error('No product found');
+    console.error('No order details found');
+  }
+});
+
+router.post('/findOrCreateOrder/:userId', async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    const [order, created] = await Order.findOrCreate({
+      where: {
+        userId,
+        isPurchased: false,
+      },
+    });
+
+    res.status(201).json(order);
+  } catch (error) {
+    console.error('No Order found');
   }
 });
 

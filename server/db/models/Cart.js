@@ -1,12 +1,12 @@
-const { Sequelize, DataTypes, Model } = require('sequelize')
-const db = require('../db')
+const { Sequelize, DataTypes, Model } = require('sequelize');
+const db = require('../db');
 
 const Cart = db.define(
   'cart',
   {
     cartQty: {
       type: Sequelize.INTEGER,
-      allowNull: false,
+      // allowNull: false,
     },
     // o: you should remove the commented out code
     // createdAt: {
@@ -19,6 +19,6 @@ const Cart = db.define(
     // },
   },
   { timestamps: false }
-)
+);
 
-module.exports = Cart
+module.exports = Cart;
