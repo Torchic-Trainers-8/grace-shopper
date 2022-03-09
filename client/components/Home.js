@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import React, { useEffect } from 'react';
 import { fetchUsers, fetchProducts, fetchUser, fetchOrder } from '../store';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,44 +6,26 @@ import AdminProducts from './AdminProducts';
 import AdminUsers from './AdminUsers';
 import AdminUser from './AdminUser';
 import Cart from './Cart';
-=======
-import React, { useEffect } from 'react'
-import { fetchUsers, fetchProducts, fetchUser, fetchOrder } from '../store'
-import { useSelector, useDispatch } from 'react-redux'
-import { Switch, Route, Link } from 'react-router-dom'
-import AdminProducts from './AdminProducts'
-import AdminUsers from './AdminUsers'
-import AdminUser from './AdminUser'
-import Cart from './Cart'
->>>>>>> Stashed changes
 
 const Home = () => {
   const dispatch = useDispatch();
   const { id, username, role } = useSelector((state) => state.auth);
   //isAdmin uses auth.role
-<<<<<<< Updated upstream
   const isAdmin = role === 'Admin';
 
   const products = useSelector((state) => state.products);
   const users = useSelector((state) => state.users);
   const order = useSelector((state) => state.order);
-=======
-  const isAdmin = role === 'Admin'
-
-  const products = useSelector((state) => state.products)
-  const users = useSelector((state) => state.users)
-  const order = useSelector((state) => state.order)
->>>>>>> Stashed changes
 
   useEffect(() => {
     // isAdmin is a gatekeeper for fetching state
-    dispatch(fetchOrder(id))
+    dispatch(fetchOrder(id));
     if (isAdmin) {
       dispatch(fetchUsers());
       dispatch(fetchProducts());
     }
   }, []);
-
+  console.log(id);
   // users list, click to bring up list (table?) component- delete button
 
   // products list, click to bring up list (table?) component - add button at top - edit, delete buttons on each product. Gets replaced by a form for edit or add
