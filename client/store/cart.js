@@ -1,22 +1,22 @@
-import axios from "axios";
+import axios from 'axios'
 
-const ADD_TO_CART = "ADD_TO_CART";
+const ADD_TO_CART = 'ADD_TO_CART'
 
-const GET_CART = "GET_CART";
+const GET_CART = 'GET_CART'
 
 export const getCart = (cart) => {
   return {
     type: GET_CART,
     cart,
-  };
-};
+  }
+}
 
 export const addToCart = (cartItem) => {
   return {
     type: ADD_TO_CART,
     cartItem,
-  };
-};
+  }
+}
 
 export const fetchCart = (userId) => {
   return async (dispatch) => {
@@ -25,38 +25,40 @@ export const fetchCart = (userId) => {
         headers: {
           authorization: window.localStorage.token,
         },
-      });
-      dispatch(getCart(data.orders[0]));
+      })
+      dispatch(getCart(data.orders[0]))
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
-};
+  }
+}
 
 export const addToCartThunk = (orderId, productId) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.put(
-        `/api/carts/addToCart/${orderId}/${productId}`
-      );
-      console.log("addcartdata", data);
-      dispatch(addToCart(data));
+      const { data } = await axios.put(`/api/carts/addToCart/${orderId}/${productId}`, {
+        headers: {
+          authorization: window.localStorage.token,
+        },
+      })
+      console.log('addcartdata', data)
+      dispatch(addToCart(data))
     } catch (error) {
-      console.error("Problem adding to car", error);
+      console.error('Problem adding to car', error)
     }
-  };
-};
+  }
+}
 
-const initialState = {};
+const initialState = {}
 
 export default function (state = initialState, action) {
   switch (action.type) {
     case GET_CART:
-      return action.cart;
+      return action.cart
     case ADD_TO_CART:
-      return action.cartItem;
+      return action.cartItem
     default:
-      return state;
+      return state
   }
 }
 
