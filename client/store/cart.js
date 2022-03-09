@@ -11,6 +11,16 @@ export const getCart = (cart) => {
   };
 };
 
+export const getEmptyCart = () => {
+  const cart = {
+    products: []
+  };
+  return {
+    type: GET_CART,
+    cart,
+  };
+};
+
 export const addToCart = (cartItem) => {
   return {
     type: ADD_TO_CART,
@@ -40,7 +50,11 @@ export const fetchCart = (userId) => {
           authorization: window.localStorage.token,
         },
       });
-      dispatch(getCart(data.orders[0]));
+      if (!data.hasOwnProperty('orders')) {
+        dispatch(getEmptyCart());
+      } else {
+        dispatch(getCart(data.orders[0]));
+      }
     } catch (error) {
       console.log(error);
     }

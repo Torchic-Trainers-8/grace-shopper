@@ -18,8 +18,6 @@ export const checkout = (order) => {
 export const fetchOrder = (userId) => {
   return async (dispatch) => {
     try {
-      // console.log('fetching order');
-      // console.log(window.localStorage.token);
       const response = await axios.get(
         `/api/orders/findOrCreateOrder/${userId}`,
         {
@@ -28,7 +26,6 @@ export const fetchOrder = (userId) => {
           },
         }
       );
-      // console.log(response.data);
       const data = response.data;
       dispatch(getOrder(data));
     } catch (error) {
@@ -49,6 +46,7 @@ export const checkoutThunk = (orderId) => {
       const data = response.data;
       console.log("data", data);
       dispatch(checkout(data));
+      dispatch(fetchCart(data.userId));
     } catch (error) {
       console.log(error);
     }
