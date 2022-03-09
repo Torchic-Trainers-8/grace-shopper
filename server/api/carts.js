@@ -1,18 +1,18 @@
-const router = require('express').Router();
-const Cart = require('../db/models/Cart');
-const Product = require('../db/models/Product');
-const User = require('../db/models/User');
-const { requireToken, isAdmin } = require('./gatekeepingMiddleware');
+const router = require("express").Router();
+const Cart = require("../db/models/Cart");
+const Product = require("../db/models/Product");
+const User = require("../db/models/User");
+const { requireToken, isAdmin } = require("./gatekeepingMiddleware");
 
 //PRODUCTS GET ROUTER
 
 // /api/carts
-router.get('/', requireToken, isAdmin, async (req, res, next) => {
+router.get("/", requireToken, isAdmin, async (req, res, next) => {
   try {
     const carts = await Cart.findAll();
     res.send(carts);
   } catch (error) {
-    console.error('No carts found');
+    console.error("No carts found");
   }
 });
 
@@ -20,8 +20,8 @@ router.get('/', requireToken, isAdmin, async (req, res, next) => {
 // /api/carts
 //Compare req.user.id to what? From owner table?
 router.put(
-  '/addToCart/:orderId/:productId',
-  requireToken,
+  "/addToCart/:orderId/:productId",
+  // requireToken,
   async (req, res, next) => {
     try {
       //Do we need this? is user id accesible here.
@@ -34,14 +34,14 @@ router.put(
         .status(200)
         .send(await cart.update({ ...cart, cartQty: cart.cartQty + 1 }));
     } catch (error) {
-      console.error('Errored on add to cart');
+      console.error("Errored on add to cart");
     }
   }
 );
 
 //in redux determine if it exists, if it does direct to put, if it doesn't direct to create
 router.put(
-  '/increaseCart/:orderId/:productId',
+  "/increaseCart/:orderId/:productId",
   requireToken,
   async (req, res, next) => {
     try {
@@ -60,13 +60,13 @@ router.put(
       });
       res.status(200).send(newCart);
     } catch (error) {
-      console.error('No product found');
+      console.error("No product found");
     }
   }
 );
 
 router.put(
-  '/decreaseCart/:orderId/:productId',
+  "/decreaseCart/:orderId/:productId",
   requireToken,
   async (req, res, next) => {
     try {
@@ -85,13 +85,13 @@ router.put(
       });
       res.status(200).send(newCart);
     } catch (error) {
-      console.error('No product found');
+      console.error("No product found");
     }
   }
 );
 
 router.delete(
-  '/deleteCart/:orderId/:productId',
+  "/deleteCart/:orderId/:productId",
   requireToken,
   async (req, res, next) => {
     try {
@@ -106,7 +106,7 @@ router.delete(
       const newCart = await cart.destroy();
       res.status(204).send(`Deleted ${productId} from ${orderId}`);
     } catch (error) {
-      console.error('No product found');
+      console.error("No product found");
     }
   }
 );
