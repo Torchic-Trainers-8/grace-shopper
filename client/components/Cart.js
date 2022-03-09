@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchOrder, getOrder } from "../store/order";
-import { fetchCart, getCart } from "../store/cart";
+import { fetchOrder, getOrder, checkoutThunk } from "../store/order";
+import {
+  fetchCart,
+  getCart,
+  decreaseCartQuantityThunk,
+  increaseCartQuantityThunk,
+  deleteCartItemThunk,
+} from "../store/cart";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -15,10 +21,6 @@ const Cart = () => {
     dispatch(fetchCart(id));
   }, [id]);
 
-  // console.log('order', order);
-  // console.log('cart', cart);
-  // console.log('cart - products', cart.products);
-
   return !cart.products ? (
     <div>Loading Order...</div>
   ) : (
@@ -27,13 +29,47 @@ const Cart = () => {
       <div>
         {cart.products.map((cart) => (
           <div key={cart.id}>
-            <div>{cart.id}</div>
             <img style={{ width: 200, height: 200 }} src={cart.image} />
             <div>{cart.title}</div>
             <div>Quantity: {cart.cart.cartQty}</div>
             {/* <div> order:{order}</div> */}
+            <button
+              type="button"
+              onClick={() => {
+                dispatch(increaseCartQuantityThunk(order.id, cart.id));
+              }}
+            >
+              +
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                dispatch(decreaseCartQuantityThunk(order.id, cart.id));
+              }}
+            >
+              -
+            </button>
+            <br />
+            <button
+              type="button"
+              onClick={() => {
+                dispatch(deleteCartItemThunk(order.id, cart.id));
+              }}
+            >
+              Remove Item
+            </button>
           </div>
         ))}
+        <button
+          type="button"
+          onClick={() => {
+            dispatch(checkoutThunk(order.id));
+            location.reload();
+            window.alert("Thank you for your purchase!");
+          }}
+        >
+          Checkout
+        </button>
       </div>
     </div>
   );
