@@ -18,7 +18,6 @@ const SingleProduct = (props) => {
     dispatch(fetchProduct(props.match.params.id));
     dispatch(fetchOrder(userId));
   }, []);
-  console.log("req.user", userId);
   return !product ? (
     <div>Loading Single Product Yarn...</div>
   ) : (

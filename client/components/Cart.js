@@ -64,7 +64,6 @@ const Cart = () => {
           type="button"
           onClick={() => {
             dispatch(checkoutThunk(order.id));
-            location.reload();
             window.alert("Thank you for your purchase!");
           }}
         >
